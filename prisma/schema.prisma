@@ -1,0 +1,81 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String
+  about     String
+  url_photo String
+  phone     String
+  password  String
+  rule      String
+  active    Boolean @default(true)
+  address   Address?
+  adoption  Adoption?
+}
+
+model Shelter {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String
+  password  String
+  phone     String
+  about     String
+  active    Boolean @default(true)
+  address   Address?
+  pet       Pet?
+}
+
+model Address {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  number    String
+  postcode  String
+  address   String
+  city      String
+  country   String
+  user      User    @relation(fields: [user_id], references: [id])
+  shelter   Shelter @relation(fields: [shelter_id], references: [id])
+  user_id   Int     @unique
+  shelter_id  Int   @unique
+}
+
+model Pet {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  url_photo String
+  age       DateTime
+  description String
+  available   Boolean
+  name        String
+  shelter   Shelter @relation(fields: [shelter_id], references: [id])
+  shelter_id  Int   @unique
+  adoption    Adoption?
+}
+
+model Adoption {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  date      DateTime
+  user      User    @relation(fields: [user_id], references: [id])
+  pet       Pet     @relation(fields: [pet_id], references: [id])  
+  user_id   Int     @unique
+  pet_id    Int     @unique
+}
