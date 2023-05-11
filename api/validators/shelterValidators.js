@@ -1,7 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { z } from 'zod';
 
-const userSchema = z.object({
+const shelterSchema = z.object({
   name: z
     .string()
     .min(6, { message: 'Name must be 6 or more characters long' }),
@@ -9,18 +8,15 @@ const userSchema = z.object({
   about: z.string().min(8, 'About must be 10 or more characters long'),
   phone: z.string().min(8, 'Phone must be 8 or more numbers long'),
   password: z.string().min(8, 'Password must be 8 or more characters long'),
-  rule: z.enum(['TUTOR', 'ADMIN']),
   active: z.boolean(),
 });
 
-function UserValidate(params) {
-  const result = userSchema.safeParse(params);
+function shelterValidate(params) {
+  const result = shelterSchema.safeParse(params);
 
   if (!result.success) {
     const jsonObject = JSON.parse(result.error.message);
     const { message } = jsonObject[0];
-
-    // console.log(message);
 
     return { result, message };
   }
@@ -28,4 +24,4 @@ function UserValidate(params) {
   return result;
 }
 
-export default UserValidate;
+export default shelterValidate;

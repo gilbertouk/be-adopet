@@ -1,14 +1,14 @@
 /* eslint-disable operator-linebreak */
 import { PrismaClient } from '@prisma/client';
 // eslint-disable-next-line import/extensions
-import validateUser from '../validators/userValidators.js';
+import UserValidate from '../validators/userValidators.js';
 
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
 });
 
 class UserController {
-  static async getUsers(req, res) {
+  static async getAllUsers(req, res) {
     try {
       const users = await prisma.user.findMany();
       return res.status(200).json(users);
@@ -48,7 +48,7 @@ class UserController {
   static async createUser(req, res) {
     const dataUser = req.body;
 
-    const result = validateUser(dataUser);
+    const result = UserValidate(dataUser);
 
     if (!result.success) {
       return res.status(400).json({ message: `${result.message}` });
