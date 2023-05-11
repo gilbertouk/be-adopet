@@ -1,5 +1,7 @@
 /* eslint-disable operator-linebreak */
 import { PrismaClient } from '@prisma/client';
+// eslint-disable-next-line import/extensions
+import validateUser from '../validators/userValidators.js';
 
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
@@ -45,29 +47,14 @@ class UserController {
 
   static async createUser(req, res) {
     const dataUser = req.body;
-    try {
-      // console.log(dataUser.name);
-      if (
-        typeof dataUser.name === 'undefined' ||
-        dataUser.name === '' ||
-        typeof dataUser.email === 'undefined' ||
-        dataUser.email === '' ||
-        typeof dataUser.about === 'undefined' ||
-        dataUser.about === '' ||
-        typeof dataUser.phone === 'undefined' ||
-        dataUser.phone === '' ||
-        typeof dataUser.password === 'undefined' ||
-        dataUser.password === '' ||
-        typeof dataUser.rule === 'undefined' ||
-        dataUser.rule === '' ||
-        typeof dataUser.active === 'undefined' ||
-        dataUser.active === ''
-      ) {
-        return res
-          .status(200)
-          .json({ message: 'Required fields must be informed.' });
-      }
 
+    const result = validateUser(dataUser);
+
+    if (!result.success) {
+      return res.status(400).json({ message: `${result.message}` });
+    }
+
+    try {
       const newUser = await prisma.user.create({ data: { ...dataUser } });
       return res.status(201).json(newUser);
     } catch (error) {
