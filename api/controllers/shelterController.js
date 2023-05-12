@@ -12,7 +12,7 @@ class ShelterController {
       const shelters = await prisma.shelter.findMany();
 
       if (!shelters || shelters.length === 0) {
-        return res.status(200).json('Não encontrado.');
+        return res.status(200).json('Shelters not found');
       }
 
       return res.status(200).json(shelters);
@@ -29,7 +29,7 @@ class ShelterController {
       });
 
       if (!shelter) {
-        return res.status(200).json('Não encontrado.');
+        return res.status(200).json('Shelter not found');
       }
 
       return res.status(200).json(shelter);
@@ -48,8 +48,8 @@ class ShelterController {
         },
       });
 
-      if (!shelter) {
-        return res.status(200).json('Não encontrado.');
+      if (!shelter || shelter.length === 0) {
+        return res.status(200).json('Shelter not found');
       }
 
       return res.status(200).json(shelter);
@@ -81,11 +81,50 @@ class ShelterController {
     const shelterId = req.params.id;
     const dataShelter = req.body;
     try {
+      const shelter = await prisma.shelter.findUnique({
+        where: { id: Number(shelterId) },
+      });
+
+      if (!shelter) {
+        return res.status(200).json('Shelter not found');
+      }
+
+      const newShelterData = { ...shelter, ...dataShelter };
+
+      const result = shelterValidate(newShelterData);
+
+      if (!result.success) {
+        return res.status(400).json({ message: `${result.message}` });
+      }
+
       const shelterUpdated = await prisma.shelter.update({
         where: { id: Number(shelterId) },
-        data: { ...dataShelter },
+        data: { ...newShelterData },
       });
       return res.status(200).json(shelterUpdated);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async deleteShelter(req, res) {
+    const shelterId = req.params.id;
+    try {
+      const shelter = await prisma.shelter.findUnique({
+        where: { id: Number(shelterId) },
+      });
+
+      if (shelter === null) {
+        return res.status(200).json({ message: 'Shelter not found' });
+      }
+
+      const shelterDeleted = await prisma.shelter.delete({
+        where: { id: Number(shelterId) },
+      });
+
+      return res.status(200).json({
+        message: `Shelter '${shelterDeleted.name}' has been deleted.`,
+      });
     } catch (error) {
       return res.status(500).json(error.message);
     }

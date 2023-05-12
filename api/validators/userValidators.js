@@ -2,9 +2,7 @@
 import { z } from 'zod';
 
 const userSchema = z.object({
-  name: z
-    .string()
-    .min(6, { message: 'Name must be 6 or more characters long' }),
+  name: z.string().min(6, 'Name must be 6 or more characters long'),
   email: z.string().email('Invalid email address'),
   about: z.string().min(8, 'About must be 10 or more characters long'),
   phone: z.string().min(8, 'Phone must be 8 or more numbers long'),
@@ -13,7 +11,7 @@ const userSchema = z.object({
   active: z.boolean(),
 });
 
-function UserValidate(params) {
+function userValidate(params) {
   const result = userSchema.safeParse(params);
 
   if (!result.success) {
@@ -28,4 +26,4 @@ function UserValidate(params) {
   return result;
 }
 
-export default UserValidate;
+export default userValidate;

@@ -9,6 +9,7 @@ router
   .get('/shelter/:id', ShelterController.getOneShelter)
   .get('/shelter/:id/address', ShelterController.getOneShelterWithAddress)
   .post('/shelter', ShelterController.createShelter)
-  .put('/shelter/:id', ShelterController.updateShelter);
+  .put('/shelter/:id', ShelterController.updateShelter)
+  .delete('/shelter/:id', ShelterController.deleteShelter);
 
 export default router;
