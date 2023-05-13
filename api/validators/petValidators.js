@@ -3,7 +3,10 @@ import { z } from 'zod';
 
 const petSchema = z.object({
   url_photo: z.string().url('Invalid url'),
-  age: z.coerce.date(),
+  age: z.date({
+    invalid_type_error: "age field must be the pet's date of birth",
+    required_error: 'age field is required',
+  }),
   description: z
     .string()
     .min(12, 'Description must be 12 or more characters long'),
@@ -26,8 +29,6 @@ function petValidate(params) {
   if (!result.success) {
     const jsonObject = JSON.parse(result.error.message);
     const { message } = jsonObject[0];
-
-    // console.log(message);
 
     return { result, message };
   }

@@ -1,6 +1,8 @@
+/* eslint-disable import/extensions */
 import { PrismaClient } from '@prisma/client';
-// eslint-disable-next-line import/extensions
 import petValidate from '../validators/petValidators.js';
+import adoptionValidate from '../validators/adoptionValidators.js';
+import stringToDate from '../utils/stringToDate.js';
 
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
@@ -42,9 +44,7 @@ class PetController {
   static async createPet(req, res) {
     const dataPet = req.body;
 
-    const ageString = dataPet.age;
-    const ageDate = new Date(ageString);
-    dataPet.age = ageDate;
+    dataPet.age = stringToDate(dataPet.age);
 
     const result = petValidate(dataPet);
 
@@ -59,14 +59,51 @@ class PetController {
         where: { id: Number(shelterId) },
       });
 
-      console.log(shelter);
-
       if (!shelter) {
         return res.status(400).json({ message: 'No shelter found' });
       }
+
       const newPet = await prisma.pet.create({ data: { ...dataPet } });
 
       return res.status(201).json(newPet);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async createPetAdoption(req, res) {
+    const petId = req.body.pet_id;
+    const userId = req.body.user_id;
+    const dataAdoption = req.body;
+
+    dataAdoption.date = stringToDate(dataAdoption.date);
+
+    const result = adoptionValidate(dataAdoption);
+
+    if (!result.success) {
+      return res.status(400).json({ message: `${result.message}` });
+    }
+
+    try {
+      const pet = await prisma.pet.findUnique({ where: { id: Number(petId) } });
+
+      if (!pet) {
+        return res.status(400).json({ message: 'No pet found' });
+      }
+
+      const user = await prisma.user.findUnique({
+        where: { id: Number(userId) },
+      });
+
+      if (!user) {
+        return res.status(400).json({ message: 'No user found' });
+      }
+
+      const adoptionCreated = await prisma.adoption.create({
+        data: { ...dataAdoption },
+      });
+
+      return res.status(201).json(adoptionCreated);
     } catch (error) {
       return res.status(500).json(error.message);
     }

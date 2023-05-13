@@ -7,6 +7,7 @@ const router = express.Router();
 router
   .get('/pets', PetController.getAllPets)
   .get('/pet/:id', PetController.getOnePet)
-  .post('/pet', PetController.createPet);
+  .post('/pet', PetController.createPet)
+  .post('/pet/adoption', PetController.createPetAdoption);
 
 export default router;
