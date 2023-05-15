@@ -1,7 +1,6 @@
 /* eslint-disable import/extensions */
 import { PrismaClient } from '@prisma/client';
 import petValidate from '../validators/petValidators.js';
-import adoptionValidate from '../validators/adoptionValidators.js';
 import stringToDate from '../utils/stringToDate.js';
 
 const prisma = new PrismaClient({
@@ -71,39 +70,70 @@ class PetController {
     }
   }
 
-  static async createPetAdoption(req, res) {
-    const petId = req.body.pet_id;
-    const userId = req.body.user_id;
-    const dataAdoption = req.body;
-
-    dataAdoption.date = stringToDate(dataAdoption.date);
-
-    const result = adoptionValidate(dataAdoption);
-
-    if (!result.success) {
-      return res.status(400).json({ message: `${result.message}` });
-    }
+  static async updatePet(req, res) {
+    const petId = req.params.id;
+    const dataPet = req.body;
 
     try {
-      const pet = await prisma.pet.findUnique({ where: { id: Number(petId) } });
-
-      if (!pet) {
-        return res.status(400).json({ message: 'No pet found' });
-      }
-
-      const user = await prisma.user.findUnique({
-        where: { id: Number(userId) },
+      const pet = await prisma.pet.findUnique({
+        where: { id: Number(petId) },
       });
 
-      if (!user) {
-        return res.status(400).json({ message: 'No user found' });
+      if (!pet || pet.length === 0) {
+        return res.status(400).json('Pet not found.');
       }
 
-      const adoptionCreated = await prisma.adoption.create({
-        data: { ...dataAdoption },
+      const newPetData = { ...pet, ...dataPet };
+
+      newPetData.age = stringToDate(newPetData.age);
+
+      const result = petValidate(newPetData);
+
+      if (!result.success) {
+        return res.status(400).json({ message: `${result.message}` });
+      }
+
+      const petUpdated = await prisma.pet.update({
+        where: { id: Number(petId) },
+        data: { ...newPetData },
       });
 
-      return res.status(201).json(adoptionCreated);
+      return res.status(200).json(petUpdated);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  static async deletePet(req, res) {
+    const petId = req.params.id;
+
+    try {
+      const pet = await prisma.pet.findUnique({
+        where: { id: Number(petId) },
+      });
+
+      if (!pet || pet.length === 0) {
+        return res.status(400).json({ message: 'Pet not found' });
+      }
+
+      const adoption = await prisma.adoption.findUnique({
+        where: { pet_id: Number(petId) },
+      });
+
+      if (adoption) {
+        return res.status(400).json({
+          message:
+            'It is necessary to delete the adoption first before deleting the pet',
+        });
+      }
+
+      const petDeleted = await prisma.pet.delete({
+        where: { id: Number(petId) },
+      });
+
+      return res
+        .status(200)
+        .json({ message: `Pet Id ${petDeleted.id} has been deleted` });
     } catch (error) {
       return res.status(500).json(error.message);
     }

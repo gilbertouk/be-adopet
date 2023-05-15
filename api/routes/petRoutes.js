@@ -8,6 +8,7 @@ router
   .get('/pets', PetController.getAllPets)
   .get('/pet/:id', PetController.getOnePet)
   .post('/pet', PetController.createPet)
-  .post('/pet/adoption', PetController.createPetAdoption);
+  .put('/pet/:id', PetController.updatePet)
+  .delete('/pet/:id', PetController.deletePet);
 
 export default router;

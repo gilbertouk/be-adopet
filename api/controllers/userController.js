@@ -97,7 +97,7 @@ class UserController {
 
       const userUpdated = await prisma.user.update({
         where: { id: Number(userId) },
-        data: { ...dataUser },
+        data: { ...newUserData },
       });
       return res.status(200).json(userUpdated);
     } catch (error) {
