@@ -4,6 +4,9 @@ import AdoptionController from '../controllers/adoptionController.js';
 
 const router = express.Router();
 
-router.post('/adoption', AdoptionController.createPetAdoption);
+router
+  .get('/adoption', AdoptionController.getAllAdoption)
+  .get('/adoption/pet', AdoptionController.getOneAdoption)
+  .post('/adoption', AdoptionController.createPetAdoption);
 
 export default router;

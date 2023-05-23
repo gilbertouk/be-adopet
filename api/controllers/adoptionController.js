@@ -8,6 +8,28 @@ const prisma = new PrismaClient({
 });
 
 class AdoptionController {
+  static async getAllAdoption(req, res) {
+    try {
+      const adoptions = await prisma.adoption.findMany();
+
+      if (!adoptions || adoptions.length === 0) {
+        return res.status(200).json('Adoptions not found.');
+      }
+
+      return res.status(200).json(adoptions);
+    } catch (error) {
+      return res.status(500).json(error.message);
+    }
+  }
+
+  // static async getOneAdoption(req, res) {
+  //   const { petId } = req.query;
+  //   const { adoptionId } = req.query;
+  //   const { userId } = req.query;
+
+  //   return res.status(200).json({ message: 'teste' });
+  // }
+
   static async createPetAdoption(req, res) {
     const petId = req.body.pet_id;
     const userId = req.body.user_id;
@@ -22,10 +44,20 @@ class AdoptionController {
     }
 
     try {
-      const pet = await prisma.pet.findUnique({ where: { id: Number(petId) } });
+      const pet = await prisma.pet.findUnique({
+        where: {
+          id: Number(petId),
+        },
+      });
 
       if (!pet) {
         return res.status(400).json({ message: 'No pet found' });
+      }
+
+      if (pet.available === false) {
+        return res
+          .status(400)
+          .json({ message: 'Pet is not available for adoption' });
       }
 
       const user = await prisma.user.findUnique({
@@ -48,6 +80,11 @@ class AdoptionController {
 
       const adoptionCreated = await prisma.adoption.create({
         data: { ...dataAdoption },
+      });
+
+      await prisma.pet.update({
+        data: { available: false },
+        where: { id: Number(petId) },
       });
 
       return res.status(201).json(adoptionCreated);
