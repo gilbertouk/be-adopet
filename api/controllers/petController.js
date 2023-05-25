@@ -22,6 +22,18 @@ class PetController {
     }
   }
 
+  static async getAvailablePets(req, res) {
+    try {
+      const petsAvailable = await prisma.pet.findMany({
+        where: { available: true },
+      });
+
+      return res.status(200).json(petsAvailable);
+    } catch (error) {
+      return res.status(200).json(error.message);
+    }
+  }
+
   static async getOnePet(req, res) {
     const petId = req.params.id;
 

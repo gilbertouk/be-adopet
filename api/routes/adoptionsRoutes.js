@@ -6,7 +6,7 @@ const router = express.Router();
 
 router
   .get('/adoption', AdoptionController.getAllAdoption)
-  .get('/adoption/pet', AdoptionController.getOneAdoption)
-  .post('/adoption', AdoptionController.createPetAdoption);
+  .post('/adoption', AdoptionController.createPetAdoption)
+  .delete('/adoption/:id', AdoptionController.deleteAdoption);
 
 export default router;
