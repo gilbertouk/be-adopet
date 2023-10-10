@@ -7,7 +7,7 @@ const userData = [
     url_photo: 'https://robohash.org/magniutanimi.png?size=50x50&set=set1',
     phone: '767-758-1411',
     password: '4URisqt4E',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
   {
@@ -18,7 +18,7 @@ const userData = [
     url_photo: 'https://robohash.org/reiciendissintea.png?size=50x50&set=set1',
     phone: '333-393-4648',
     password: '3dt2dDfhNi7',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
   {
@@ -30,7 +30,7 @@ const userData = [
       'https://robohash.org/minimaaliquamnatus.png?size=50x50&set=set1',
     phone: '886-200-9493',
     password: '2G3Qp9kaE2',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
   {
@@ -42,7 +42,7 @@ const userData = [
       'https://robohash.org/voluptatesautdeleniti.png?size=50x50&set=set1',
     phone: '728-334-1016',
     password: 'baSDQfBNSEs',
-    rule: 'ADMIN',
+    role: 'ADMIN',
     active: true,
   },
   {
@@ -54,7 +54,7 @@ const userData = [
       'https://robohash.org/possimusveniamdolorum.png?size=50x50&set=set1',
     phone: '753-777-9776',
     password: 'l5hy08pu6ZBC',
-    rule: 'ADMIN',
+    role: 'ADMIN',
     active: true,
   },
   {
@@ -65,7 +65,7 @@ const userData = [
     url_photo: 'https://robohash.org/ipsamidoccaecati.png?size=50x50&set=set1',
     phone: '513-318-1457',
     password: 'EzExMNsRsGx',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
   {
@@ -76,7 +76,7 @@ const userData = [
     url_photo: 'https://robohash.org/nonofficiisiusto.png?size=50x50&set=set1',
     phone: '850-926-8128',
     password: '5oKKqIoQUFi',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
   {
@@ -88,7 +88,7 @@ const userData = [
       'https://robohash.org/dolorempraesentiumpossimus.png?size=50x50&set=set1',
     phone: '188-493-8802',
     password: '5brfFO',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
   {
@@ -98,7 +98,7 @@ const userData = [
     url_photo: 'https://robohash.org/quoexcepturiearum.png?size=50x50&set=set1',
     phone: '940-911-1079',
     password: 'cDtBgDeS2y',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
   {
@@ -110,7 +110,7 @@ const userData = [
       'https://robohash.org/repellendusminimaea.png?size=50x50&set=set1',
     phone: '918-251-9844',
     password: 'Y18HnpmvqKlg',
-    rule: 'TUTOR',
+    role: 'TUTOR',
     active: true,
   },
 ];
