@@ -62,3 +62,11 @@ npx prisma migrate reset -f
 ```
 
 [Database schema](https://whimsical.com/adopet-RrxjyDRcVHzmjPcm9gQq8d)
+
+### Hosting
+
+Paste in the terminal:
+
+```
+npm run start
+```
