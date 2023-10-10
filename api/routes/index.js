@@ -5,8 +5,8 @@ import pets from './petRoutes.js';
 import adoptions from './adoptionsRoutes.js';
 
 const routes = (app) => {
-  app.get('/', (req, res) => {
-    res.send('Welcome to Adopet API');
+  app.get('/api', (req, res) => {
+    res.status(200).send({ msg: 'Welcome to Adopet API' });
   });
 
   app.use(users, shelters, pets, adoptions);
