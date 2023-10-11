@@ -1,11 +1,13 @@
 {
-  "name": "challenge-adopet",
+  "name": "be-adopet",
   "version": "1.0.0",
-  "description": "",
+  "description": "Adopet, a REST API for a platform to connect people who want to adopt pets and shelters.",
   "type": "module",
   "main": "./api/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --watch",
+    "test:coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --detectOpenHandles --coverage",
     "start": "nodemon server.js"
   },
   "prisma": {
@@ -20,10 +22,13 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@jest/globals": "^29.7.0",
     "eslint": "^8.40.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.27.5",
+    "jest": "^29.7.0",
     "nodemon": "^3.0.1",
-    "prisma": "^5.4.2"
+    "prisma": "^5.4.2",
+    "supertest": "^6.3.3"
   }
 }
