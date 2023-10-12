@@ -8,8 +8,9 @@ const prisma = new PrismaClient();
 const request = supertest(app);
 
 beforeEach(() => {
-  execSync('npx prisma db push --force-reset');
-  execSync('npx prisma db seed');
+  // execSync('npx prisma db push --force-reset');
+  // execSync('npx prisma db seed');
+  execSync('replibyte -c conf.yaml dump restore remote -v latest');
 });
 
 afterAll(async () => {
@@ -239,5 +240,23 @@ describe('POST on /adoption', () => {
       .expect(400);
 
     expect(body.message).toBe('pet id 14 is not available for adoption');
+  });
+});
+
+describe('DELETE on /adoption/:id', () => {
+  test('GET: 204 status with no content responds', async () => {
+    await request.delete('/adoption/5').expect(204);
+  });
+
+  test('GET: 400 status when given invalid id on body request', async () => {
+    const { body } = await request.delete('/adoption/invalid').expect(400);
+
+    expect(body.message).toBe('id must be a number');
+  });
+
+  test('GET: 404 status when given id does not exist on database', async () => {
+    const { body } = await request.delete('/adoption/11').expect(404);
+
+    expect(body.message).toBe('adoption not found');
   });
 });

@@ -139,6 +139,44 @@ class AdoptionModel {
       throw objErr;
     }
   }
+
+  static async deletePetAdoption(adoptionId) {
+    try {
+      if (Number.isNaN(Number(adoptionId))) {
+        const objErr = {
+          status: 400,
+          message: 'id must be a number',
+        };
+        throw objErr;
+      }
+
+      const adoption = await prisma.adoption.findUnique({
+        where: { id: Number(adoptionId) },
+      });
+
+      if (!adoption || adoption.length === 0) {
+        const objErr = {
+          status: 404,
+          message: 'adoption not found',
+        };
+        throw objErr;
+      }
+
+      const adoptionDeleted = await prisma.adoption.delete({
+        where: { id: Number(adoptionId) },
+      });
+
+      await prisma.pet.update({
+        data: { available: true },
+        where: { id: adoptionDeleted.pet_id },
+      });
+
+      return;
+    } catch (err) {
+      const objErr = { status: err.status, message: err.message };
+      throw objErr;
+    }
+  }
 }
 
 export default AdoptionModel;
