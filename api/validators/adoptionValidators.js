@@ -6,18 +6,14 @@ const adoptionSchema = z.object({
     required_error: 'date field is required',
     invalid_type_error: 'date field must be the adoption date',
   }),
-  user_id: z
-    .number({
-      required_error: 'user_id is required',
-      invalid_type_error: 'user_id must be a number',
-    })
-    .int(),
-  pet_id: z
-    .number({
-      required_error: 'pet_id field is required',
-      invalid_type_error: 'pet_id field must be a number',
-    })
-    .int(),
+  user_id: z.number({
+    required_error: 'user_id field is required',
+    invalid_type_error: 'user_id field must be a number',
+  }),
+  pet_id: z.number({
+    required_error: 'pet_id field is required',
+    invalid_type_error: 'pet_id field must be a number',
+  }),
 });
 
 function adoptionValidate(params) {

@@ -7,7 +7,7 @@ const userSchema = z.object({
   about: z.string().min(8, 'About must be 10 or more characters long'),
   phone: z.string().min(8, 'Phone must be 8 or more numbers long'),
   password: z.string().min(8, 'Password must be 8 or more characters long'),
-  rule: z.enum(['TUTOR', 'ADMIN']),
+  role: z.enum(['TUTOR', 'ADMIN']),
   active: z.boolean(),
 });
 
