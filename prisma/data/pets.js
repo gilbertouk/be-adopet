@@ -108,7 +108,7 @@ const petData = [
     url_photo: 'https://example.com/photos/14',
     age: new Date('2020-06-20'),
     description: 'Graceful and elegant, this cat is a true beauty.',
-    available: false,
+    available: true,
     name: 'Sophie',
     shelter_id: 2,
   },
