@@ -1,24 +1,20 @@
-/* eslint-disable import/extensions */
 import { PrismaClient } from '@prisma/client';
 import petValidate from '../validators/petValidators.js';
 import stringToDate from '../utils/stringToDate.js';
+import PetModel from '../models/petModel.js';
 
 const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
+  // log: ['query', 'info', 'warn', 'error'],
 });
 
 class PetController {
-  static async getAllPets(req, res) {
+  static async getAllPets(req, res, next) {
     try {
-      const pets = await prisma.pet.findMany();
+      const pets = await PetModel.selectAllPets();
 
-      if (!pets || pets.length === 0) {
-        return res.status(200).json('Pets not found.');
-      }
-
-      return res.status(200).json(pets);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ pets });
+    } catch (err) {
+      next(err);
     }
   }
 
