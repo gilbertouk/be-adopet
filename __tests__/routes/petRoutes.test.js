@@ -436,35 +436,21 @@ describe('PUT on /pet/:id', () => {
       "age field is required and must be the pet's date of birth",
     );
   });
-  // test('POST: 400 status when not given age on body request', async () => {
-  //   const { body } = await request
-  //     .post('/pet')
-  //     .send({
-  //       url_photo: 'http://example.com/photos/3',
-  //       description: 'Loyal and friendly, this dog loves to be by your side.',
-  //       available: true,
-  //       name: 'Tong',
-  //       shelter_id: 1,
-  //     })
-  //     .expect(400);
-  //   expect(body.message).toBe(
-  //     "age field is required and must be the pet's date of birth",
-  //   );
-  // });
-  // test('POST: 400 status when given invalid description on body request', async () => {
-  //   const { body } = await request
-  //     .post('/pet')
-  //     .send({
-  //       url_photo: 'http://example.com/photos/3',
-  //       age: '2018-01-10',
-  //       description: 10,
-  //       available: true,
-  //       name: 'Tong',
-  //       shelter_id: 1,
-  //     })
-  //     .expect(400);
-  //   expect(body.message).toBe('description must be a string');
-  // });
+
+  test('PUT: 400 status when given invalid description on body request', async () => {
+    const { body } = await request
+      .put('/pet/2')
+      .send({
+        url_photo: 'http://example.com/photos/3',
+        age: '2018-01-10',
+        description: 10,
+        available: true,
+        name: 'Tong',
+        shelter_id: 1,
+      })
+      .expect(400);
+    expect(body.message).toBe('description must be a string');
+  });
   // test('POST: 400 status when not given description on body request', async () => {
   //   const { body } = await request
   //     .post('/pet')
