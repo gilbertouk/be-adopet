@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 import supertest from 'supertest';
 import { afterAll, beforeEach, describe, expect, test } from '@jest/globals';
 import app from '../../api/index.js';

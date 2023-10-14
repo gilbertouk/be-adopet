@@ -86,7 +86,18 @@ class PetModel {
         throw objErr;
       }
 
-      const insertedPet = await prisma.pet.create({ data: { ...objPet } });
+      const petDataToInsert = {
+        url_photo: objPet.url_photo,
+        age: objPet.age,
+        description: objPet.description,
+        available: objPet.available,
+        name: objPet.name,
+        shelter_id: objPet.shelter_id,
+      };
+
+      const insertedPet = await prisma.pet.create({
+        data: { ...petDataToInsert },
+      });
 
       return insertedPet;
     } catch (err) {
@@ -118,10 +129,21 @@ class PetModel {
       }
 
       const newPetData = { ...pet, ...body };
+      const petDataToUpdate = {
+        id: newPetData.id,
+        createdAt: newPetData.createdAt,
+        updatedAt: newPetData.updatedAt,
+        url_photo: newPetData.url_photo,
+        age: newPetData.age,
+        description: newPetData.description,
+        available: newPetData.available,
+        name: newPetData.name,
+        shelter_id: newPetData.shelter_id,
+      };
 
-      newPetData.age = stringToDate(newPetData.age);
+      petDataToUpdate.age = stringToDate(petDataToUpdate.age);
 
-      const result = petValidate(newPetData);
+      const result = petValidate(petDataToUpdate);
 
       if (!result.success) {
         const objErr = {
@@ -133,13 +155,67 @@ class PetModel {
 
       const petUpdated = await prisma.pet.update({
         where: { id: Number(petId) },
-        data: { ...newPetData },
+        data: { ...petDataToUpdate },
       });
 
       return petUpdated;
     } catch (err) {
-      const objErr = { status: err.status, message: err.message };
-      throw objErr;
+      if (err.status && err.message) {
+        const objErr = { status: err.status, message: err.message };
+        throw objErr;
+      }
+
+      throw err;
+    }
+  }
+
+  static async deletePet(petId) {
+    try {
+      if (Number.isNaN(Number(petId))) {
+        const objErr = {
+          status: 400,
+          message: 'pet_id query must be a number',
+        };
+        throw objErr;
+      }
+
+      const pet = await prisma.pet.findUnique({
+        where: { id: Number(petId) },
+      });
+
+      if (!pet || pet.length === 0) {
+        const objErr = {
+          status: 404,
+          message: 'pet not found',
+        };
+        throw objErr;
+      }
+
+      const adoption = await prisma.adoption.findUnique({
+        where: { pet_id: Number(petId) },
+      });
+
+      if (adoption) {
+        const objErr = {
+          status: 400,
+          message:
+            'it is necessary to delete the adoption first before deleting the pet',
+        };
+        throw objErr;
+      }
+
+      const petDeleted = await prisma.pet.delete({
+        where: { id: Number(petId) },
+      });
+
+      return petDeleted;
+    } catch (err) {
+      if (err.status && err.message) {
+        const objErr = { status: err.status, message: err.message };
+        throw objErr;
+      }
+
+      throw err;
     }
   }
 }

@@ -1,6 +1,4 @@
 import { PrismaClient } from '@prisma/client';
-import petValidate from '../validators/petValidators.js';
-import stringToDate from '../utils/stringToDate.js';
 import PetModel from '../models/petModel.js';
 
 const prisma = new PrismaClient({
@@ -63,38 +61,13 @@ class PetController {
     }
   }
 
-  static async deletePet(req, res) {
-    const petId = req.params.id;
-
+  static async deletePet(req, res, next) {
     try {
-      const pet = await prisma.pet.findUnique({
-        where: { id: Number(petId) },
-      });
-
-      if (!pet || pet.length === 0) {
-        return res.status(400).json({ message: 'Pet not found' });
-      }
-
-      const adoption = await prisma.adoption.findUnique({
-        where: { pet_id: Number(petId) },
-      });
-
-      if (adoption) {
-        return res.status(400).json({
-          message:
-            'It is necessary to delete the adoption first before deleting the pet',
-        });
-      }
-
-      const petDeleted = await prisma.pet.delete({
-        where: { id: Number(petId) },
-      });
-
-      return res
-        .status(200)
-        .json({ message: `Pet Id ${petDeleted.id} has been deleted` });
-    } catch (error) {
-      return res.status(500).json(error.message);
+      const petId = req.params.id;
+      await PetModel.deletePet(petId);
+      res.sendStatus(204);
+    } catch (err) {
+      next(err);
     }
   }
 }
