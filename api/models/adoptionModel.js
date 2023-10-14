@@ -124,8 +124,14 @@ class AdoptionModel {
         throw objErr;
       }
 
+      const adoptionDataToInsert = {
+        date: objAdoption.date,
+        pet_id: objAdoption.pet_id,
+        user_id: objAdoption.user_id,
+      };
+
       const adoptionCreated = await prisma.adoption.create({
-        data: { ...objAdoption },
+        data: { ...adoptionDataToInsert },
       });
 
       await prisma.pet.update({

@@ -113,6 +113,27 @@ describe('POST on /adoption', () => {
     });
   });
 
+  test('GET: 201 status with adoption data inserted and ignored extras fields on body request', async () => {
+    const { body } = await request
+      .post('/adoption')
+      .send({
+        date: '2023-05-13',
+        pet_id: 13,
+        user_id: 1,
+        test: 'tests',
+      })
+      .expect(201);
+
+    expect(body.adoption).toEqual({
+      id: 6,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+      date: '2023-05-13T00:00:00.000Z',
+      user_id: 1,
+      pet_id: 13,
+    });
+  });
+
   test('GET: 400 status when given invalid date on body request', async () => {
     const { body } = await request
       .post('/adoption')
