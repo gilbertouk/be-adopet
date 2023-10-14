@@ -2,25 +2,34 @@
 import { z } from 'zod';
 
 const petSchema = z.object({
-  url_photo: z.string().url('Invalid url'),
+  url_photo: z
+    .string({ required_error: 'url_photo field is required' })
+    .url('invalid url'),
   age: z.date({
-    invalid_type_error: "age field must be the pet's date of birth",
+    invalid_type_error:
+      "age field is required and must be the pet's date of birth",
     required_error: 'age field is required',
   }),
   description: z
-    .string()
-    .min(12, 'Description must be 12 or more characters long'),
+    .string({
+      invalid_type_error: 'description must be a string',
+      required_error: 'description field is required',
+    })
+    .min(12, 'description must be 12 or more characters long'),
   available: z.boolean({
-    required_error: 'available is required',
+    required_error: 'available field is required',
     invalid_type_error: 'available must be a boolean',
   }),
-  name: z.string().min(2, 'Name must be 2 or more characters long'),
-  shelter_id: z
-    .number({
-      required_error: 'shelter_id is required',
-      invalid_type_error: 'shelter_id must be a number',
+  name: z
+    .string({
+      invalid_type_error: 'name must be a string',
+      required_error: 'name field is required',
     })
-    .int(),
+    .min(2, 'name must be 2 or more characters long'),
+  shelter_id: z.number({
+    required_error: 'shelter_id field is required',
+    invalid_type_error: 'shelter_id must be a number',
+  }),
 });
 
 function petValidate(params) {
