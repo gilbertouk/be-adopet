@@ -1,20 +1,18 @@
+/* eslint-disable object-curly-newline */
 import supertest from 'supertest';
-import { execSync } from 'child_process';
-import { PrismaClient } from '@prisma/client';
 import { afterAll, beforeEach, describe, expect, test } from '@jest/globals';
 import app from '../../api/index.js';
+import seed from '../../db/seeds/seed.js';
+import db from '../../db/connection.js';
 
-const prisma = new PrismaClient();
 const request = supertest(app);
 
-beforeEach(() => {
-  // execSync('npx prisma db push --force-reset');
-  // execSync('npx prisma db seed');
-  execSync('replibyte -c conf.yaml dump restore remote -v latest');
+beforeEach(async () => {
+  await seed();
 });
 
 afterAll(async () => {
-  await prisma.$disconnect();
+  await db.end();
 });
 
 describe('GET on /adoption', () => {
