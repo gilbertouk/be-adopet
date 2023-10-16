@@ -1,132 +1,78 @@
+/* eslint-disable no-unused-vars */
 import { PrismaClient } from '@prisma/client';
-// eslint-disable-next-line import/extensions
 import shelterValidate from '../validators/shelterValidators.js';
+import ShelterModel from '../models/shelterModel.js';
 
 const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
+  // log: ['query', 'info', 'warn', 'error'],
 });
 
 class ShelterController {
-  static async getAllShelters(req, res) {
+  static async getAllShelters(req, res, next) {
     try {
-      const shelters = await prisma.shelter.findMany();
+      const shelters = await ShelterModel.selectAllShelters();
 
-      if (!shelters || shelters.length === 0) {
-        return res.status(200).json('Shelters not found');
-      }
-
-      return res.status(200).json(shelters);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).json({ shelters });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async getOneShelter(req, res) {
+  static async getOneShelter(req, res, next) {
     const shelterId = req.params.id;
     try {
-      const shelter = await prisma.shelter.findUnique({
-        where: { id: Number(shelterId) },
-      });
+      const shelter = await ShelterModel.selectOneShelterById(shelterId);
 
-      if (!shelter) {
-        return res.status(200).json('Shelter not found');
-      }
-
-      return res.status(200).json(shelter);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ shelter });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async getOneShelterWithAddress(req, res) {
-    const shelterId = req.params.id;
+  static async getOneShelterWithAddress(req, res, next) {
     try {
-      const shelter = await prisma.shelter.findUnique({
-        where: { id: Number(shelterId) },
-        include: {
-          address: true,
-        },
-      });
+      const shelterId = req.params.id;
+      const shelter = await ShelterModel.selectOneShelterWithAddressById(
+        shelterId,
+      );
 
-      if (!shelter || shelter.length === 0) {
-        return res.status(200).json('Shelter not found');
-      }
-
-      return res.status(200).json(shelter);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ shelter });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async createShelter(req, res) {
-    const dataShelter = req.body;
-
-    const result = shelterValidate(dataShelter);
-
-    if (!result.success) {
-      return res.status(400).json({ message: `${result.message}` });
-    }
-
+  static async createShelter(req, res, next) {
     try {
-      const newShelter = await prisma.shelter.create({
-        data: { ...dataShelter },
-      });
-      return res.status(201).json(newShelter);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      const dataShelter = req.body;
+      const shelter = await ShelterModel.insertShelter(dataShelter);
+
+      res.status(201).send({ shelter });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async updateShelter(req, res) {
-    const shelterId = req.params.id;
-    const dataShelter = req.body;
+  static async updateShelter(req, res, next) {
     try {
-      const shelter = await prisma.shelter.findUnique({
-        where: { id: Number(shelterId) },
-      });
+      const shelterId = req.params.id;
+      const { body } = req;
+      const shelter = await ShelterModel.updateShelterById(shelterId, body);
 
-      if (!shelter) {
-        return res.status(200).json('Shelter not found');
-      }
-
-      const newShelterData = { ...shelter, ...dataShelter };
-
-      const result = shelterValidate(newShelterData);
-
-      if (!result.success) {
-        return res.status(400).json({ message: `${result.message}` });
-      }
-
-      const shelterUpdated = await prisma.shelter.update({
-        where: { id: Number(shelterId) },
-        data: { ...newShelterData },
-      });
-      return res.status(200).json(shelterUpdated);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ shelter });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async deleteShelter(req, res) {
-    const shelterId = req.params.id;
+  static async deleteShelter(req, res, next) {
     try {
-      const shelter = await prisma.shelter.findUnique({
-        where: { id: Number(shelterId) },
-      });
+      const shelterId = req.params.id;
+      await ShelterModel.deleteShelterById(shelterId);
 
-      if (shelter === null) {
-        return res.status(200).json({ message: 'Shelter not found' });
-      }
-
-      const shelterDeleted = await prisma.shelter.delete({
-        where: { id: Number(shelterId) },
-      });
-
-      return res.status(200).json({
-        message: `Shelter '${shelterDeleted.name}' has been deleted.`,
-      });
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.sendStatus(204);
+    } catch (err) {
+      next(err);
     }
   }
 }

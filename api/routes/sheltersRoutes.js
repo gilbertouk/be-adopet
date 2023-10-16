@@ -1,5 +1,4 @@
 import express from 'express';
-// eslint-disable-next-line import/extensions
 import ShelterController from '../controllers/shelterController.js';
 
 const router = express.Router();

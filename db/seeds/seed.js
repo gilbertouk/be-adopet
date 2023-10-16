@@ -162,7 +162,7 @@ async function seed() {
       ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/7', '2019-11-01 00:00:00', 'Lively and energetic, this pup will keep you on your toes.', false, 'Max', 7),
       ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/8', '2015-02-14 00:00:00', 'Friendly and affectionate, this dog loves attention.', true, 'Daisy', 8),
       ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/9', '2014-08-19 00:00:00', 'Intelligent and protective, this dog will guard your home.', true, 'Rufus', 9),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/10', '2022-03-05 00:00:00', 'Tiny and adorable, this kitten will melt your heart.', true, 'Peanut', 10),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/10', '2022-03-05 00:00:00', 'Tiny and adorable, this kitten will melt your heart.', true, 'Peanut', 9),
       ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/11', '2013-05-12 00:00:00', 'Active and playful, this dog loves to run and play.', false, 'Charlie', 4),
       ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/12', '2012-09-29 00:00:00', 'Calm and relaxed, this cat is the perfect lap cat.', true, 'Fluffy', 7),
       ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/13', '2019-12-10 00:00:00', 'Smart and friendly, this dog is eager to please.', true, 'Bailey', 8),
@@ -201,8 +201,7 @@ async function seed() {
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '0', 'GL7 6NL', '19th Floor', 'Wangshi', 'China', NULL, 6),
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '7408', 'PR4 4BS', 'Apt 26', 'Pul-e Sangī', 'Afghanistan', NULL, 7),
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '4', 'LL13 0GA', 'PO Box 5323', 'Al Maḩwīt', 'Yemen', NULL, 8),
-      ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '0789', 'DH6 3AP', 'Room 1928', 'Nunutba', 'Indonesia', NULL, 9),
-      ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '80364', 'ST7 4BU', 'PO Box 80188', 'Lebao', 'Indonesia', NULL, 10);
+      ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '0789', 'DH6 3AP', 'Room 1928', 'Nunutba', 'Indonesia', NULL, 9);
     `);
   } catch (err) {
     console.error('Error creating tables:', err);

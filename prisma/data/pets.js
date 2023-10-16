@@ -78,7 +78,7 @@ const petData = [
     description: 'Tiny and adorable, this kitten will melt your heart.',
     available: true,
     name: 'Peanut',
-    shelter_id: 10,
+    shelter_id: 9,
   },
   {
     url_photo: 'https://example.com/photos/11',
