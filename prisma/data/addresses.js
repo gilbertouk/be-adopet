@@ -170,15 +170,6 @@ const addressData = [
     city: 'Nunutba',
     country: 'Indonesia',
   },
-  {
-    user_id: null,
-    shelter_id: 10,
-    number: '80364',
-    postcode: 'ST7 4BU',
-    address: 'PO Box 80188',
-    city: 'Lebao',
-    country: 'Indonesia',
-  },
 ];
 
 export default addressData;
