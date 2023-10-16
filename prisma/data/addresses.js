@@ -81,15 +81,6 @@ const addressData = [
     country: 'France',
   },
   {
-    user_id: 10,
-    shelter_id: null,
-    number: '48',
-    postcode: 'WA7 2YE',
-    address: 'Room 232',
-    city: 'Guérande',
-    country: 'France',
-  },
-  {
     user_id: null,
     shelter_id: 1,
     number: '57287',

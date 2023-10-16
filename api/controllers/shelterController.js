@@ -1,11 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { PrismaClient } from '@prisma/client';
-import shelterValidate from '../validators/shelterValidators.js';
 import ShelterModel from '../models/shelterModel.js';
-
-const prisma = new PrismaClient({
-  // log: ['query', 'info', 'warn', 'error'],
-});
 
 class ShelterController {
   static async getAllShelters(req, res, next) {
