@@ -1,130 +1,74 @@
 import { PrismaClient } from '@prisma/client';
-// eslint-disable-next-line import/extensions
-import userValidate from '../validators/userValidators.js';
+import UserModel from '../models/userModel.js';
 
 const prisma = new PrismaClient({
-  log: ['query', 'info', 'warn', 'error'],
+  // log: ['query', 'info', 'warn', 'error'],
 });
 
 class UserController {
-  static async getAllUsers(req, res) {
+  static async getAllUsers(req, res, next) {
     try {
-      const users = await prisma.user.findMany();
+      const users = await UserModel.selectAllUsers();
 
-      if (!users || users.length === 0) {
-        return res.status(200).json('Users not found.');
-      }
-
-      return res.status(200).json(users);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ users });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async getOneUser(req, res) {
-    const userId = req.params.id;
+  static async getOneUser(req, res, next) {
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: Number(userId) },
-      });
+      const userId = req.params.id;
+      const user = await UserModel.selectOneUserById(userId);
 
-      if (!user || user.length === 0) {
-        return res.status(200).json('User not found.');
-      }
-
-      return res.status(200).json(user);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ user });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async getOneUserWithAddress(req, res) {
-    const userId = req.params.id;
+  static async getOneUserWithAddress(req, res, next) {
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: Number(userId) },
-        include: {
-          address: true,
-        },
-      });
+      const userId = req.params.id;
+      const user = await UserModel.selectOneUserWithAddressById(userId);
 
-      if (!user || user.length === 0) {
-        return res.status(200).json('User not found.');
-      }
-
-      return res.status(200).json(user);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ user });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async createUser(req, res) {
-    const dataUser = req.body;
-
-    const result = userValidate(dataUser);
-
-    if (!result.success) {
-      return res.status(400).json({ message: `${result.message}` });
-    }
-
+  static async createUser(req, res, next) {
     try {
-      const newUser = await prisma.user.create({ data: { ...dataUser } });
-      return res.status(201).json(newUser);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      const dataUser = req.body;
+      const user = await UserModel.insertUser(dataUser);
+
+      res.status(201).send({ user });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async updateUser(req, res) {
-    const userId = req.params.id;
-    const dataUser = req.body;
+  static async updateUser(req, res, next) {
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: Number(userId) },
-      });
+      const userId = req.params.id;
+      const { body } = req;
+      const user = await UserModel.updateUserById(userId, body);
 
-      if (!user || user.length === 0) {
-        return res.status(200).json('User not found.');
-      }
-
-      const newUserData = { ...user, ...dataUser };
-
-      const result = userValidate(newUserData);
-
-      if (!result.success) {
-        return res.status(400).json({ message: `${result.message}` });
-      }
-
-      const userUpdated = await prisma.user.update({
-        where: { id: Number(userId) },
-        data: { ...newUserData },
-      });
-      return res.status(200).json(userUpdated);
-    } catch (error) {
-      return res.status(500).json(error.message);
+      res.status(200).send({ user });
+    } catch (err) {
+      next(err);
     }
   }
 
-  static async deleteUser(req, res) {
-    const userId = req.params.id;
+  static async deleteUser(req, res, next) {
     try {
-      const user = await prisma.user.findUnique({
-        where: { id: Number(userId) },
-      });
+      const userId = req.params.id;
+      const user = await UserModel.deleteUserById(userId);
 
-      if (user === null) {
-        return res.status(200).json({ message: 'User not found.' });
-      }
-
-      const userDeleted = await prisma.user.delete({
-        where: { id: Number(userId) },
-      });
-
-      return res
-        .status(200)
-        .json({ message: `User '${userDeleted.name}' has been deleted.` });
-    } catch (error) {
-      return res.status(500).json(error.message);
+      return res.sendStatus(204);
+    } catch (err) {
+      next(err);
     }
   }
 }

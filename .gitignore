@@ -3,5 +3,4 @@ node_modules
 migrations
 coverage
 conf.yaml
-data
 .vscode

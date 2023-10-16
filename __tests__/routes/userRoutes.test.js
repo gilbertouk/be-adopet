@@ -15,212 +15,231 @@ afterAll(async () => {
   await db.end();
 });
 
-describe('GET on /shelters', () => {
+describe('GET on /users', () => {
   test('GET: 200 status', async () => {
-    await request.get('/shelters').expect(200);
+    await request.get('/users').expect(200);
   });
 
-  test('GET: 200 status with all shelters data form database', async () => {
-    const { body } = await request.get('/shelters');
-    expect(body.shelters.length).toBe(10);
-    body.shelters.forEach((shelter) => {
-      expect(shelter.id).toEqual(expect.any(Number));
-      expect(shelter.createdAt).toEqual(expect.any(String));
-      expect(shelter.updatedAt).toEqual(expect.any(String));
-      expect(shelter.name).toEqual(expect.any(String));
-      expect(shelter.email).toEqual(expect.any(String));
-      expect(shelter.password).toEqual(expect.any(String));
-      expect(shelter.phone).toEqual(expect.any(String));
-      expect(shelter.about).toEqual(expect.any(String));
-      expect(shelter.active).toEqual(expect.any(Boolean));
+  test('GET: 200 status with users data from database', async () => {
+    const { body } = await request.get('/users');
+    expect(body.users.length).toBe(10);
+    body.users.forEach((user) => {
+      expect(user).toEqual({
+        id: expect.any(Number),
+        createdAt: expect.any(String),
+        updatedAt: expect.any(String),
+        name: expect.any(String),
+        email: expect.any(String),
+        about: expect.any(String),
+        url_photo: expect.any(String),
+        phone: expect.any(String),
+        password: expect.any(String),
+        role: expect.any(String),
+        active: expect.any(Boolean),
+      });
     });
   });
 });
 
-describe('GET on /shelter/:id', () => {
+describe('GET on /user/:id', () => {
   test('GET: 200 status', async () => {
-    await request.get('/shelter/2').expect(200);
+    await request.get('/user/1').expect(200);
   });
 
-  test('GET: 200 status responds with the shelter data by id given on request', async () => {
-    const { body } = await request.get('/shelter/2');
-    expect(body.shelter).toEqual({
-      id: 2,
-      createdAt: '2023-10-12T14:47:10.748Z',
-      updatedAt: '2023-10-12T14:47:10.748Z',
-      name: 'Ladonna Rosenstiel',
-      email: 'lrosenstiel1@redcross.org',
-      password: 'R8bD8nd',
-      phone: '591-298-3059',
-      about:
-        'eget vulputate ut ultrices vel augue vestibulum ante ipsum primis',
-      active: true,
+  test('GET: 200 status with users data from database', async () => {
+    const { body } = await request.get('/user/1');
+    expect(body.user).toEqual({
+      id: 1,
+      createdAt: expect.any(String),
+      updatedAt: expect.any(String),
+      name: expect.any(String),
+      email: expect.any(String),
+      about: expect.any(String),
+      url_photo: expect.any(String),
+      phone: expect.any(String),
+      password: expect.any(String),
+      role: expect.any(String),
+      active: expect.any(Boolean),
     });
   });
 
-  test('GET: 400 status when given invalid id on request', async () => {
-    const result = await request.get('/shelter/invalid');
-    expect(result.status).toBe(400);
-    expect(result.body.message).toBe('shelterId query must be a number');
+  test('GET: 404 status when given user id that not exist on database', async () => {
+    const response = await request.get('/user/100');
+    expect(response.status).toBe(404);
+    expect(response.body.message).toBe('user not found');
   });
 
-  test('GET: 404 status when given shelter id on request that not exist on database', async () => {
-    const result = await request.get('/shelter/100');
-    expect(result.status).toBe(404);
-    expect(result.body.message).toBe('shelter not found');
+  test('GET: 400 status when given invalid user id', async () => {
+    const response = await request.get('/user/invalid');
+    expect(response.status).toBe(400);
+    expect(response.body.message).toBe('userId query must be a number');
   });
 });
 
-describe('GET on /shelter/:id/address', () => {
+describe('GET on /user/:id/address', () => {
   test('GET: 200 status', async () => {
-    await request.get('/shelter/2/address').expect(200);
+    await request.get('/user/1/address').expect(200);
   });
 
-  test('GET: 200 status responds with the shelter data by id given on request', async () => {
-    const { body } = await request.get('/shelter/2/address');
-    expect(body.shelter).toEqual({
-      id: 2,
-      createdAt: '2023-10-12T14:47:10.748Z',
-      updatedAt: '2023-10-12T14:47:10.748Z',
-      name: 'Ladonna Rosenstiel',
-      email: 'lrosenstiel1@redcross.org',
-      password: 'R8bD8nd',
-      phone: '591-298-3059',
+  test('GET: 200 status responds with the user data by id given on request', async () => {
+    const { body } = await request.get('/user/1/address');
+    expect(body.user).toEqual({
+      id: 1,
+      createdAt: '2023-10-12T14:47:10.741Z',
+      updatedAt: '2023-10-12T14:47:10.741Z',
+      name: 'Lynnett Marzella',
+      email: 'lmarzella0@spotify.com',
       about:
-        'eget vulputate ut ultrices vel augue vestibulum ante ipsum primis',
+        'in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu',
+      url_photo: 'https://robohash.org/magniutanimi.png?size=50x50&set=set1',
+      phone: '767-758-1411',
+      password: '4URisqt4E',
+      role: 'TUTOR',
       active: true,
       address: {
-        id: 11,
+        id: 1,
         createdAt: '2023-10-12T14:47:10.752Z',
         updatedAt: '2023-10-12T14:47:10.752Z',
-        number: '13',
-        postcode: 'BA21 4EX',
-        address: '13th Floor',
-        city: 'Haquira',
-        country: 'Peru',
-        user_id: null,
-        shelter_id: 2,
+        number: '29',
+        postcode: 'BN20 8JS',
+        address: '18th Floor',
+        city: 'Rogóźno',
+        country: 'Poland',
+        user_id: 1,
+        shelter_id: null,
       },
     });
   });
 
   test('GET: 400 status when given invalid id on request', async () => {
-    const result = await request.get('/shelter/invalid/address');
+    const result = await request.get('/user/invalid/address');
     expect(result.status).toBe(400);
-    expect(result.body.message).toBe('shelterId query must be a number');
+    expect(result.body.message).toBe('userId query must be a number');
   });
 
-  test('GET: 404 status when given shelter id on request that not exist on database', async () => {
-    const result = await request.get('/shelter/100/address');
+  test('GET: 404 status when given user id on request that not exist on database', async () => {
+    const result = await request.get('/user/100/address');
     expect(result.status).toBe(404);
-    expect(result.body.message).toBe('shelter not found');
+    expect(result.body.message).toBe('user not found');
   });
 
-  test('GET: 200 status when given shelter id on request that does not have address on database', async () => {
-    const { body } = await request.get('/shelter/10/address');
-    expect(body.shelter).toEqual({
+  test('GET: 200 status when given user id on request that does not have address on database', async () => {
+    const { body } = await request.get('/user/10/address');
+    expect(body.user).toEqual({
       id: 10,
-      createdAt: '2023-10-12T14:47:10.748Z',
-      updatedAt: '2023-10-12T14:47:10.748Z',
-      name: 'Fabiano Topley',
-      email: 'ftopley9@auda.org.au',
-      password: 'jhM8biqLax',
-      phone: '109-878-6124',
-      about: 'maecenas tristique est et tempus semper est',
+      createdAt: '2023-10-12T14:47:10.741Z',
+      updatedAt: '2023-10-12T14:47:10.741Z',
+      name: 'Ali Gaunson',
+      email: 'agaunson9@bluehost.com',
+      about:
+        'volutpat in congue etiam justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna',
+      url_photo:
+        'https://robohash.org/repellendusminimaea.png?size=50x50&set=set1',
+      phone: '918-251-9844',
+      password: 'Y18HnpmvqKlg',
+      role: 'TUTOR',
       active: true,
       address: null,
     });
   });
 });
 
-describe('POST on /shelter', () => {
+describe('POST on /user', () => {
   test('POST: 400 status when not given name on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('name field is required');
   });
 
   test('POST: 400 status when given invalid name on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'test',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('name must be 6 or more characters long');
   });
 
   test('POST: 400 status when not given email on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       password: 'jhM8bsada',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('email field is required');
   });
 
   test('POST: 400 status when given invalid email on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('invalid email address');
   });
 
   test('POST: 400 status when not given phone on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       password: 'jhM8bsada',
       email: 'ftopley9@auda.org.au',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('phone field is required');
   });
 
   test('POST: 400 status when given invalid phone on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('phone must be 8 or more numbers long');
   });
 
   test('POST: 400 status when not given about on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       password: 'jhM8bsada',
       email: 'ftopley9@auda.org.au',
       phone: '109-878-6124',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('about field is required');
   });
 
   test('POST: 400 status when given invalid about on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878-4234',
       about: 'test',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe(
@@ -229,23 +248,25 @@ describe('POST on /shelter', () => {
   });
 
   test('POST: 400 status when not given password on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('password field is required');
   });
 
   test('POST: 400 status when given invalid password on body request', async () => {
-    const result = await request.post('/shelter').send({
+    const result = await request.post('/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
     });
     expect(result.status).toBe(400);
     expect(result.body.message).toBe(
@@ -253,34 +274,64 @@ describe('POST on /shelter', () => {
     );
   });
 
-  test('POST: 201 status with shelter data inserted', async () => {
+  test('POST: 400 status when not given role on body request', async () => {
+    const result = await request.post('/user').send({
+      name: 'Fabiano Topley',
+      email: 'ftopley9@auda.org.au',
+      phone: '109-878-6124',
+      about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
+    });
+    expect(result.status).toBe(400);
+    expect(result.body.message).toBe('password field is required');
+  });
+
+  test('POST: 400 status when given invalid role on body request', async () => {
+    const result = await request.post('/user').send({
+      name: 'Fabiano Topley',
+      email: 'ftopley9@auda.org.au',
+      password: 'jhM8',
+      phone: '109-878-6124',
+      about: 'maecenas tristique est et tempus semper est',
+      role: 'TEST',
+    });
+    expect(result.status).toBe(400);
+    expect(result.body.message).toBe(
+      'password must be 8 or more characters long',
+    );
+  });
+
+  test('POST: 201 status with user data inserted', async () => {
     const { body } = await request
-      .post('/shelter')
+      .post('/user')
       .send({
         name: 'Fabiano Topley',
         email: 'ftopley9@auda.org.au',
         password: 'jhM823424',
         phone: '109-878-6124',
         about: 'maecenas tristique est et tempus semper est',
+        role: 'TUTOR',
       })
       .expect(201);
 
-    expect(body.shelter).toEqual({
+    expect(body.user).toEqual({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM823424',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
       id: expect.any(Number),
       active: expect.any(Boolean),
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
+      url_photo: null,
     });
   });
 
-  test('POST: 201 status with shelter data inserted ignored extras fields on body request', async () => {
+  test('POST: 201 status with user data inserted ignored extras fields on body request', async () => {
     const { body } = await request
-      .post('/shelter')
+      .post('/user')
       .send({
         name: 'Fabiano Topley',
         email: 'ftopley9@auda.org.au',
@@ -288,50 +339,51 @@ describe('POST on /shelter', () => {
         phone: '109-878-6124',
         about: 'maecenas tristique est et tempus semper est',
         test: 'test',
+        role: 'TUTOR',
       })
       .expect(201);
 
-    expect(body.shelter).toEqual({
+    expect(body.user).toEqual({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM823424',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
+      role: 'TUTOR',
       id: expect.any(Number),
       active: expect.any(Boolean),
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
+      url_photo: null,
     });
 
-    expect(body.shelter).not.toContain('test');
+    expect(body.user).not.toContain('test');
   });
 });
 
-describe('PUT on /shelter/:id', () => {
+describe('PUT on /user/:id', () => {
   test('PUT: 400 status when given invalid id', async () => {
-    const result = await request.put('/shelter/invalid').send({
+    const result = await request.put('/user/invalid').send({
       email: 'ftopley9@auda.org.au',
-      password: 'jhM8bsada',
-      phone: '109-878-6124',
-      about: 'maecenas tristique est et tempus semper est',
+      password: 'jhM8bsad4a',
     });
     expect(result.status).toBe(400);
-    expect(result.body.message).toBe('shelterId query must be a number');
+    expect(result.body.message).toBe('userId query must be a number');
   });
 
   test('PUT: 400 status when given id does not exist on database', async () => {
-    const result = await request.put('/shelter/100').send({
+    const result = await request.put('/user/100').send({
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878-6124',
       about: 'maecenas tristique est et tempus semper est',
     });
     expect(result.status).toBe(404);
-    expect(result.body.message).toBe('shelter not found');
+    expect(result.body.message).toBe('user not found');
   });
 
   test('PUT: 400 status when given invalid name on body request', async () => {
-    const result = await request.put('/shelter/2').send({
+    const result = await request.put('/user/2').send({
       name: 'test',
       password: '135dad434f43',
     });
@@ -339,8 +391,19 @@ describe('PUT on /shelter/:id', () => {
     expect(result.body.message).toBe('name must be 6 or more characters long');
   });
 
+  test('PUT: 400 status when given invalid role on body request', async () => {
+    const result = await request.put('/user/2').send({
+      role: 'test',
+      password: '135dad434f43',
+    });
+    expect(result.status).toBe(400);
+    expect(result.body.message).toBe(
+      "Invalid enum value. Expected 'TUTOR' | 'ADMIN', received 'test'",
+    );
+  });
+
   test('PUT: 400 status when given invalid email on body request', async () => {
-    const result = await request.put('/shelter/2').send({
+    const result = await request.put('/user/2').send({
       name: 'Fabiano Topley',
       email: 'ftopley9auda.org.au',
       password: 'jhM8bsada',
@@ -350,7 +413,7 @@ describe('PUT on /shelter/:id', () => {
   });
 
   test('PUT: 400 status when given invalid phone on body request', async () => {
-    const result = await request.put('/shelter/2').send({
+    const result = await request.put('/user/2').send({
       password: 'jhM8bsada',
       phone: '109-878',
     });
@@ -359,7 +422,7 @@ describe('PUT on /shelter/:id', () => {
   });
 
   test('PUT: 400 status when given invalid about on body request', async () => {
-    const result = await request.put('/shelter/2').send({
+    const result = await request.put('/user/2').send({
       password: 'jhM8bsada',
       about: 'test',
     });
@@ -370,7 +433,7 @@ describe('PUT on /shelter/:id', () => {
   });
 
   test('PUT: 400 status when given invalid password on body request', async () => {
-    const result = await request.put('/shelter/2').send({
+    const result = await request.put('/user/2').send({
       password: 'jhM8',
     });
     expect(result.status).toBe(400);
@@ -379,9 +442,9 @@ describe('PUT on /shelter/:id', () => {
     );
   });
 
-  test('PUT: 201 status with shelter data updated', async () => {
+  test('PUT: 201 status with user data updated', async () => {
     const { body } = await request
-      .put('/shelter/2')
+      .put('/user/2')
       .send({
         name: 'Gilberto Antonio',
         email: 'gilberto@auda.org.au',
@@ -391,7 +454,7 @@ describe('PUT on /shelter/:id', () => {
       })
       .expect(200);
 
-    expect(body.shelter).toEqual({
+    expect(body.user).toEqual({
       name: 'Gilberto Antonio',
       email: 'gilberto@auda.org.au',
       password: '123456789',
@@ -401,12 +464,14 @@ describe('PUT on /shelter/:id', () => {
       active: expect.any(Boolean),
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
+      role: 'TUTOR',
+      url_photo: expect.any(String),
     });
   });
 
-  test('PUT: 201 status with shelter data updated ignored extras fields on body request', async () => {
+  test('PUT: 201 status with user data updated ignored extras fields on body request', async () => {
     const { body } = await request
-      .put('/shelter/2')
+      .put('/user/2')
       .send({
         name: 'Gilberto Antonio',
         email: 'gilberto@auda.org.au',
@@ -417,7 +482,7 @@ describe('PUT on /shelter/:id', () => {
       })
       .expect(200);
 
-    expect(body.shelter).toEqual({
+    expect(body.user).toEqual({
       name: 'Gilberto Antonio',
       email: 'gilberto@auda.org.au',
       password: '123456789',
@@ -427,35 +492,37 @@ describe('PUT on /shelter/:id', () => {
       active: expect.any(Boolean),
       createdAt: expect.any(String),
       updatedAt: expect.any(String),
+      role: 'TUTOR',
+      url_photo: expect.any(String),
     });
 
-    expect(body.shelter).not.toContain('test');
+    expect(body.user).not.toContain('test');
   });
 });
 
-describe('DELETE on /shelter/:id', () => {
-  test('DELETE: 400 status when try delete shelter that have pets on database', async () => {
-    const response = await request.delete('/shelter/9').expect(400);
+describe('DELETE on /user/:id', () => {
+  test('DELETE: 400 status when try delete user that have pets adoptions on database', async () => {
+    const response = await request.delete('/user/1').expect(400);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe(
-      'it was not possible to delete the shelter because it has registered pets',
+      'it was not possible to delete the user because it has registered pets adoption',
     );
   });
 
   test('DELETE: 204 status no content', async () => {
-    const response = await request.delete('/shelter/10');
+    const response = await request.delete('/user/10');
     expect(response.status).toBe(204);
   });
 
   test('DELETE: 404 status when given id does not exist on database', async () => {
-    const response = await request.delete('/shelter/100');
+    const response = await request.delete('/user/100');
     expect(response.status).toBe(404);
-    expect(response.body.message).toBe('shelter not found');
+    expect(response.body.message).toBe('user not found');
   });
 
   test('DELETE: 400 status when given invalid id', async () => {
-    const response = await request.delete('/shelter/invalid');
+    const response = await request.delete('/user/invalid');
     expect(response.status).toBe(400);
-    expect(response.body.message).toBe('shelterId query must be a number');
+    expect(response.body.message).toBe('userId query must be a number');
   });
 });

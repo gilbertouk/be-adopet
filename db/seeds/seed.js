@@ -113,7 +113,7 @@ async function seed() {
     `);
 
     await db.query(`
-      ALTER TABLE "Adoption" ADD CONSTRAINT "Adoption_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+      ALTER TABLE "Adoption" ADD CONSTRAINT "Adoption_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
     `);
 
     await db.query(`
@@ -192,7 +192,6 @@ async function seed() {
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '8132', 'RH17 6JT', 'PO Box 53229', 'Rashaant', 'Mongolia', 7, NULL),
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '580', 'WN2 4SU', '14th Floor', 'Aragarças', 'Brazil', 8, NULL),
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '84456', 'DH7 6FD', 'PO Box 74582', 'Nantes', 'France', 9, NULL),
-      ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '48', 'WA7 2YE', 'Room 232', 'Guérande', 'France', 10, NULL),
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '57287', 'SL6 5AH', 'PO Box 35777', 'Melekyne', 'Ukraine', NULL, 1),
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '13', 'BA21 4EX', '13th Floor', 'Haquira', 'Peru', NULL, 2),
       ('2023-10-12 14:47:10.752', '2023-10-12 14:47:10.752', '199', 'CB4 1JE', 'Room 463', 'Dikson', 'Russia', NULL, 3),
