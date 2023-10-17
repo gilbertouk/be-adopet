@@ -1,9 +1,4 @@
-import { PrismaClient } from '@prisma/client';
 import PetModel from '../models/petModel.js';
-
-const prisma = new PrismaClient({
-  // log: ['query', 'info', 'warn', 'error'],
-});
 
 class PetController {
   static async getAllPets(_req, res, next) {

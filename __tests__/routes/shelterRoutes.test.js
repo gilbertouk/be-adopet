@@ -303,7 +303,7 @@ describe('POST on /shelter', () => {
       updatedAt: expect.any(String),
     });
 
-    expect(body.shelter).not.toContain('test');
+    expect(body.shelter).not.toHaveProperty('test');
   });
 });
 
@@ -429,7 +429,7 @@ describe('PUT on /shelter/:id', () => {
       updatedAt: expect.any(String),
     });
 
-    expect(body.shelter).not.toContain('test');
+    expect(body.shelter).not.toHaveProperty('test');
   });
 });
 

@@ -150,7 +150,7 @@ describe('POST on /pet', () => {
       name: 'Tong',
       shelter_id: 1,
     });
-    expect(body.pet).not.toContain('test');
+    expect(body.pet).not.toHaveProperty('test');
   });
 
   test('POST: 400 status when given invalid url_photo on body request', async () => {
@@ -595,8 +595,8 @@ describe('PUT on /pet/:id', () => {
       name: 'Tong',
       shelter_id: 1,
     });
-    expect(body.pet).not.toContain('test');
-    expect(body.pet).not.toContain('tests');
+    expect(body.pet).not.toHaveProperty('test');
+    expect(body.pet).not.toHaveProperty('tests');
   });
 });
 

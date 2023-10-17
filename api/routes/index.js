@@ -5,7 +5,7 @@ import adoptions from './adoptionsRoutes.js';
 import addresses from './addressesRoutes.js';
 
 const routes = (app) => {
-  app.get('/api', (req, res) => {
+  app.get('/api', (_req, res) => {
     res.status(200).send({ message: 'Welcome to Adopet API' });
   });
 

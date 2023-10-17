@@ -357,7 +357,7 @@ describe('POST on /user', () => {
       url_photo: null,
     });
 
-    expect(body.user).not.toContain('test');
+    expect(body.user).not.toHaveProperty('test');
   });
 });
 
@@ -496,7 +496,7 @@ describe('PUT on /user/:id', () => {
       url_photo: expect.any(String),
     });
 
-    expect(body.user).not.toContain('test');
+    expect(body.user).not.toHaveProperty('test');
   });
 });
 
