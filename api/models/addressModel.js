@@ -53,7 +53,20 @@ class AddressModel {
 
           throw objErr;
         } else {
-          objAddress.shelter_id = +shelterId;
+          const shelter = await prisma.shelter.findUnique({
+            where: { id: Number(shelterId) },
+          });
+
+          if (shelter) {
+            objAddress.shelter_id = +shelterId;
+          } else {
+            const objErr = {
+              status: 404,
+              message: 'shelter not found',
+            };
+
+            throw objErr;
+          }
         }
       }
 
