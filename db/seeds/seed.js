@@ -97,6 +97,14 @@ async function seed() {
     `);
 
     await db.query(`
+    CREATE UNIQUE INDEX "Shelter_email_key" ON "Shelter"("email");
+    `);
+
+    await db.query(`
+    CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+    `);
+
+    await db.query(`
       CREATE UNIQUE INDEX "Adoption_pet_id_key" ON "Adoption"("pet_id");
     `);
 
@@ -121,33 +129,33 @@ async function seed() {
     `);
 
     await db.query(`
-      INSERT INTO public."User" ("createdAt", "updatedAt", name, email, about, url_photo, phone, password, role, active) 
-      VALUES 
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Lynnett Marzella', 'lmarzella0@spotify.com', 'in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu', 'https://robohash.org/magniutanimi.png?size=50x50&set=set1', '767-758-1411', '4URisqt4E', 'TUTOR', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Ermentrude Atcherley', 'eatcherley1@vimeo.com', 'felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae', 'https://robohash.org/reiciendissintea.png?size=50x50&set=set1', '333-393-4648', '3dt2dDfhNi7', 'TUTOR', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Bartholomew Muckle', 'bmuckle2@japanpost.jp', 'rutrum at lorem integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo', 'https://robohash.org/minimaaliquamnatus.png?size=50x50&set=set1', '886-200-9493', '2G3Qp9kaE2', 'TUTOR', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Joby Skyrme', 'jskyrme3@yellowpages.com', 'lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio', 'https://robohash.org/voluptatesautdeleniti.png?size=50x50&set=set1', '728-334-1016', 'baSDQfBNSEs', 'ADMIN', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Jessey Bernaciak', 'jbernaciak4@springer.com', 'posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat', 'https://robohash.org/possimusveniamdolorum.png?size=50x50&set=set1', '753-777-9776', 'l5hy08pu6ZBC', 'ADMIN', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Bear Lodford', 'blodford5@ed.gov', 'lacinia eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula suspendisse ornare consequat', 'https://robohash.org/ipsamidoccaecati.png?size=50x50&set=set1', '513-318-1457', 'EzExMNsRsGx', 'TUTOR', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Hilary McClancy', 'hmcclancy6@tumblr.com', 'dapibus dolor vel est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum ac', 'https://robohash.org/nonofficiisiusto.png?size=50x50&set=set1', '850-926-8128', '5oKKqIoQUFi', 'TUTOR', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Laurie Antonucci', 'lantonucci7@ocn.ne.jp', 'consequat nulla nisl nunc nisl duis bibendum felis sed interdum venenatis turpis enim blandit mi in', 'https://robohash.org/dolorempraesentiumpossimus.png?size=50x50&set=set1', '188-493-8802', '5brfFO', 'TUTOR', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Elaina Glading', 'eglading8@mapy.cz', 'posuere cubilia curae nulla dapibus dolor vel est donec', 'https://robohash.org/quoexcepturiearum.png?size=50x50&set=set1', '940-911-1079', 'cDtBgDeS2y', 'TUTOR', true),
-      ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Ali Gaunson', 'agaunson9@bluehost.com', 'volutpat in congue etiam justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna', 'https://robohash.org/repellendusminimaea.png?size=50x50&set=set1', '918-251-9844', 'Y18HnpmvqKlg', 'TUTOR', true);
+    INSERT INTO public."User" ("createdAt", "updatedAt", name, email, about, url_photo, phone, password, role, active) 
+    VALUES 
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Lynnett Marzella', 'lmarzella0@spotify.com', 'in magna bibendum imperdiet nullam orci pede venenatis non sodales sed tincidunt eu', 'https://robohash.org/magniutanimi.png?size=50x50&set=set1', '767-758-1411', '$2b$10$dYunrtZ/Ttk6FCSzOjTzau8eDdzLlfL9b25Aj7QTNgxw.v/6LDUY2', 'TUTOR', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Ermentrude Atcherley', 'eatcherley1@vimeo.com', 'felis ut at dolor quis odio consequat varius integer ac leo pellentesque ultrices mattis odio donec vitae', 'https://robohash.org/reiciendissintea.png?size=50x50&set=set1', '333-393-4648', '$2b$10$oMxrhpjm9yqjjhJ4LwjCKu4sMonRA/bec6AFUJ67nl2Z6x.ferC6W', 'TUTOR', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Bartholomew Muckle', 'bmuckle2@japanpost.jp', 'rutrum at lorem integer tincidunt ante vel ipsum praesent blandit lacinia erat vestibulum sed magna at nunc commodo', 'https://robohash.org/minimaaliquamnatus.png?size=50x50&set=set1', '886-200-9493', '$2b$10$4nnO/w8ICtGHtoT2ElVlueeTGpHbtasSNSIPE5uUW9MHdbCSfOfXO', 'TUTOR', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Joby Skyrme', 'jskyrme3@yellowpages.com', 'lacus morbi quis tortor id nulla ultrices aliquet maecenas leo odio', 'https://robohash.org/voluptatesautdeleniti.png?size=50x50&set=set1', '728-334-1016', '$2b$10$hQ0V0CrSIM1pOoOgnNprD.rACTIAy..TpHz6Fnu4C0kWS0Eyefq0S', 'ADMIN', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Jessey Bernaciak', 'jbernaciak4@springer.com', 'posuere cubilia curae donec pharetra magna vestibulum aliquet ultrices erat', 'https://robohash.org/possimusveniamdolorum.png?size=50x50&set=set1', '753-777-9776', '$2b$10$jWlL9NFMInHvxgr0svW2he5LZFPxLDoFdB6Xy3ANDp6T.HvF/QIIq', 'ADMIN', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Bear Lodford', 'blodford5@ed.gov', 'lacinia eget tincidunt eget tempus vel pede morbi porttitor lorem id ligula suspendisse ornare consequat', 'https://robohash.org/ipsamidoccaecati.png?size=50x50&set=set1', '513-318-1457', '$2b$10$CDVubX7PY4UeccB0N5WYK.UD.A.dBGgqtKsI/H866MjaqEceGPrai', 'TUTOR', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Hilary McClancy', 'hmcclancy6@tumblr.com', 'dapibus dolor vel est donec odio justo sollicitudin ut suscipit a feugiat et eros vestibulum ac', 'https://robohash.org/nonofficiisiusto.png?size=50x50&set=set1', '850-926-8128', '$2b$10$rBRgwXm8eTTSQhpS8Oq2zexq0xiuNKQ5V1gwVnzwvE7mXLtx7rBBu', 'TUTOR', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Laurie Antonucci', 'lantonucci7@ocn.ne.jp', 'consequat nulla nisl nunc nisl duis bibendum felis sed interdum venenatis turpis enim blandit mi in', 'https://robohash.org/dolorempraesentiumpossimus.png?size=50x50&set=set1', '188-493-8802', '$2b$10$EcLy0r/5QKjdCZRhBAc9rOWtO1UFO7upp.4sNbuEmOrZjvhNrTUfW', 'TUTOR', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Elaina Glading', 'eglading8@mapy.cz', 'posuere cubilia curae nulla dapibus dolor vel est donec', 'https://robohash.org/quoexcepturiearum.png?size=50x50&set=set1', '940-911-1079', '$2b$10$GGK.1vBxx/gjSjLQJT/A6uUt1r9iuHBB/AEPudk/Z64Trwb7R0xv.', 'TUTOR', true),
+    ('2023-10-12 14:47:10.741', '2023-10-12 14:47:10.741', 'Ali Gaunson', 'agaunson9@bluehost.com', 'volutpat in congue etiam justo etiam pretium iaculis justo in hac habitasse platea dictumst etiam faucibus cursus urna', 'https://robohash.org/repellendusminimaea.png?size=50x50&set=set1', '918-251-9844', '$2b$10$0s/QnrrmZK3zB8Nh2.Lele09PMGwd2m.zdFR9uXATC.HgPzYs90nC', 'TUTOR', true);
     `);
 
     await db.query(`
-      INSERT INTO public."Shelter" ("createdAt", "updatedAt", name, email, password, phone, about, active) 
-      VALUES 
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Pennie Jedrychowski', 'pjedrychowski0@prnewswire.com', 'gfxp2V', '372-277-1078', 'laoreet ut rhoncus aliquet pulvinar sed nisl nunc', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Ladonna Rosenstiel', 'lrosenstiel1@redcross.org', 'R8bD8nd', '591-298-3059', 'eget vulputate ut ultrices vel augue vestibulum ante ipsum primis', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Ike Barwise', 'ibarwise2@topsy.com', 'IAJJwdmDmiQj', '549-182-4285', 'vehicula condimentum curabitur in libero ut massa volutpat convallis', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Janeen Simoes', 'jsimoes3@merriam-webster.com', 'hO9iOV', '933-890-4814', 'tellus in sagittis dui vel nisl duis ac nibh fusce', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Delphinia Presdee', 'dpresdee4@noaa.gov', '2ir3bkotk', '291-372-3066', 'vel lectus in quam fringilla rhoncus', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Carmel Aiston', 'caiston5@github.com', 'yAe8WC2', '538-695-3704', 'massa volutpat convallis morbi odio odio elementum', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Cele Wilmut', 'cwilmut6@amazon.de', 'MZZOa3MGda16', '822-139-5582', 'ut erat curabitur gravida nisi at nibh in hac habitasse', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Nani Busher', 'nbusher7@amazon.de', 'm0xE8pqW', '539-185-7657', 'accumsan tortor quis turpis sed ante', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Pall Carayol', 'pcarayol8@over-blog.com', 'oKEzEnY', '141-651-0513', 'donec dapibus duis at velit eu est', true),
-      ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Fabiano Topley', 'ftopley9@auda.org.au', 'jhM8biqLax', '109-878-6124', 'maecenas tristique est et tempus semper est', true);
+    INSERT INTO public."Shelter" ("createdAt", "updatedAt", name, email, password, phone, about, active) 
+    VALUES 
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Pennie Jedrychowski', 'pjedrychowski0@prnewswire.com', '$2b$10$6rm1gzAU9TBX5uLx1fpqIOaeOSFssaPGvTKzEBoYISIKt6tVA1eou', '372-277-1078', 'laoreet ut rhoncus aliquet pulvinar sed nisl nunc', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Ladonna Rosenstiel', 'lrosenstiel1@redcross.org', '$2b$10$1ZAqOUGR1L4aFxkFVHLz0.onF2bKkaxsYeAjydu6banc.55hjsAF2', '591-298-3059', 'eget vulputate ut ultrices vel augue vestibulum ante ipsum primis', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Ike Barwise', 'ibarwise2@topsy.com', '$2b$10$Q64t.E6x1eTHb4F2e/hFjuiNedRTlWwXoQCj0UyRyMyZe5CxVdgem', '549-182-4285', 'vehicula condimentum curabitur in libero ut massa volutpat convallis', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Janeen Simoes', 'jsimoes3@merriam-webster.com', '$2b$10$3OdNapqpW2w9otk4H1Uv1OIt0ECkg7cgSlkaMNcEFAgKgDIrsraFm', '933-890-4814', 'tellus in sagittis dui vel nisl duis ac nibh fusce', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Delphinia Presdee', 'dpresdee4@noaa.gov', '$2b$10$jRqBFxqIXoJerEo/0gKfUexvtMCkemgQTANrofLSWdWQ80Pe66IVe', '291-372-3066', 'vel lectus in quam fringilla rhoncus', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Carmel Aiston', 'caiston5@github.com', '$2b$10$f4B5p3wqBJ2UQAr1pO42kOoXOdH6OIOYcl5K.Vp8FWYeAENC29Meq', '538-695-3704', 'massa volutpat convallis morbi odio odio elementum', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Cele Wilmut', 'cwilmut6@amazon.de', '$2b$10$Al.cuwmqTizZ.dde716BAuHIEAcPa2DMIa1nXG4CuI2sG37jxTCmi', '822-139-5582', 'ut erat curabitur gravida nisi at nibh in hac habitasse', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Nani Busher', 'nbusher7@amazon.de', '$2b$10$EyLdK5rlcY6A7zml94mq.uPPP4ATD8Zl4BTyoZh9qKWuSxkwcfHX2', '539-185-7657', 'accumsan tortor quis turpis sed ante', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Pall Carayol', 'pcarayol8@over-blog.com', '$2b$10$T2hjulM6zI1l.G99xPAhKOZOgqdiSDHghgBbzsN4L2VOEHj5kqiqS', '141-651-0513', 'donec dapibus duis at velit eu est', true),
+    ('2023-10-12 14:47:10.748', '2023-10-12 14:47:10.748', 'Fabiano Topley', 'ftopley9@auda.org.au', '$2b$10$bwWq4W/PflLSsO5T2GvbHecFsNRmvGbrG3l3nOClOapMzpYyD99rW', '109-878-6124', 'maecenas tristique est et tempus semper est', true);
     `);
 
     await db.query(`

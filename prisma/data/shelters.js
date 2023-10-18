@@ -2,7 +2,7 @@ const shelter = [
   {
     name: 'Pennie Jedrychowski',
     email: 'pjedrychowski0@prnewswire.com',
-    password: 'gfxp2V',
+    password: '$2b$10$6rm1gzAU9TBX5uLx1fpqIOaeOSFssaPGvTKzEBoYISIKt6tVA1eou',
     phone: '372-277-1078',
     about: 'laoreet ut rhoncus aliquet pulvinar sed nisl nunc',
     active: true,
@@ -10,7 +10,7 @@ const shelter = [
   {
     name: 'Ladonna Rosenstiel',
     email: 'lrosenstiel1@redcross.org',
-    password: 'R8bD8nd',
+    password: '$2b$10$1ZAqOUGR1L4aFxkFVHLz0.onF2bKkaxsYeAjydu6banc.55hjsAF2',
     phone: '591-298-3059',
     about: 'eget vulputate ut ultrices vel augue vestibulum ante ipsum primis',
     active: true,
@@ -18,7 +18,7 @@ const shelter = [
   {
     name: 'Ike Barwise',
     email: 'ibarwise2@topsy.com',
-    password: 'IAJJwdmDmiQj',
+    password: '$2b$10$Q64t.E6x1eTHb4F2e/hFjuiNedRTlWwXoQCj0UyRyMyZe5CxVdgem',
     phone: '549-182-4285',
     about:
       'vehicula condimentum curabitur in libero ut massa volutpat convallis',
@@ -27,7 +27,7 @@ const shelter = [
   {
     name: 'Janeen Simoes',
     email: 'jsimoes3@merriam-webster.com',
-    password: 'hO9iOV',
+    password: '$2b$10$3OdNapqpW2w9otk4H1Uv1OIt0ECkg7cgSlkaMNcEFAgKgDIrsraFm',
     phone: '933-890-4814',
     about: 'tellus in sagittis dui vel nisl duis ac nibh fusce',
     active: true,
@@ -35,7 +35,7 @@ const shelter = [
   {
     name: 'Delphinia Presdee',
     email: 'dpresdee4@noaa.gov',
-    password: '2ir3bkotk',
+    password: '$2b$10$jRqBFxqIXoJerEo/0gKfUexvtMCkemgQTANrofLSWdWQ80Pe66IVe',
     phone: '291-372-3066',
     about: 'vel lectus in quam fringilla rhoncus',
     active: true,
@@ -43,7 +43,7 @@ const shelter = [
   {
     name: 'Carmel Aiston',
     email: 'caiston5@github.com',
-    password: 'yAe8WC2',
+    password: '$2b$10$f4B5p3wqBJ2UQAr1pO42kOoXOdH6OIOYcl5K.Vp8FWYeAENC29Meq',
     phone: '538-695-3704',
     about: 'massa volutpat convallis morbi odio odio elementum',
     active: true,
@@ -51,7 +51,7 @@ const shelter = [
   {
     name: 'Cele Wilmut',
     email: 'cwilmut6@amazon.de',
-    password: 'MZZOa3MGda16',
+    password: '$2b$10$Al.cuwmqTizZ.dde716BAuHIEAcPa2DMIa1nXG4CuI2sG37jxTCmi',
     phone: '822-139-5582',
     about: 'ut erat curabitur gravida nisi at nibh in hac habitasse',
     active: true,
@@ -59,7 +59,7 @@ const shelter = [
   {
     name: 'Nani Busher',
     email: 'nbusher7@amazon.de',
-    password: 'm0xE8pqW',
+    password: '$2b$10$EyLdK5rlcY6A7zml94mq.uPPP4ATD8Zl4BTyoZh9qKWuSxkwcfHX2',
     phone: '539-185-7657',
     about: 'accumsan tortor quis turpis sed ante',
     active: true,
@@ -67,7 +67,7 @@ const shelter = [
   {
     name: 'Pall Carayol',
     email: 'pcarayol8@over-blog.com',
-    password: 'oKEzEnY',
+    password: '$2b$10$T2hjulM6zI1l.G99xPAhKOZOgqdiSDHghgBbzsN4L2VOEHj5kqiqS',
     phone: '141-651-0513',
     about: 'donec dapibus duis at velit eu est',
     active: true,
@@ -75,7 +75,7 @@ const shelter = [
   {
     name: 'Fabiano Topley',
     email: 'ftopley9@auda.org.au',
-    password: 'jhM8biqLax',
+    password: '$2b$10$bwWq4W/PflLSsO5T2GvbHecFsNRmvGbrG3l3nOClOapMzpYyD99rW',
     phone: '109-878-6124',
     about: 'maecenas tristique est et tempus semper est',
     active: true,
