@@ -15,13 +15,13 @@ afterAll(async () => {
   await db.end();
 });
 
-describe('GET on /pets', () => {
+describe('GET on /api/pets', () => {
   test('GET: 200 status', async () => {
-    await request.get('/pets').expect(200);
+    await request.get('/api/pets').expect(200);
   });
 
   test('GET: 200 status with pets data from database', async () => {
-    const { body } = await request.get('/pets');
+    const { body } = await request.get('/api/pets');
 
     expect(body.pets.length).toBe(15);
     body.pets.forEach((pet) => {
@@ -42,13 +42,13 @@ describe('GET on /pets', () => {
   });
 });
 
-describe('GET on /pets/available', () => {
+describe('GET on /api/pets/available', () => {
   test('GET: 200 status', async () => {
-    await request.get('/pets/available').expect(200);
+    await request.get('/api/pets/available').expect(200);
   });
 
   test('GET: 200 status with available pets data from database', async () => {
-    const { body } = await request.get('/pets/available');
+    const { body } = await request.get('/api/pets/available');
 
     expect(body.petsAvailable.length).toBe(11);
     body.petsAvailable.forEach((pet) => {
@@ -69,13 +69,13 @@ describe('GET on /pets/available', () => {
   });
 });
 
-describe('GET on /pet/:id', () => {
+describe('GET on /api/pet/:id', () => {
   test('GET: 200 status', async () => {
-    await request.get('/pet/1').expect(200);
+    await request.get('/api/pet/1').expect(200);
   });
 
   test('GET: 200 status with pet data from database by petId', async () => {
-    const { body } = await request.get('/pet/1');
+    const { body } = await request.get('/api/pet/1');
     expect(body.pet).toEqual({
       id: 1,
       createdAt: '2023-10-12T14:47:10.759Z',
@@ -90,20 +90,20 @@ describe('GET on /pet/:id', () => {
   });
 
   test('GET: 404 status when given petId that not exist on database', async () => {
-    const { body } = await request.get('/pet/100').expect(404);
+    const { body } = await request.get('/api/pet/100').expect(404);
     expect(body.message).toBe('pet not found');
   });
 
   test('GET: 400 status when given invalid petId', async () => {
-    const { body } = await request.get('/pet/invalid').expect(400);
+    const { body } = await request.get('/api/pet/invalid').expect(400);
     expect(body.message).toBe('petId query must be a number');
   });
 });
 
-describe('POST on /pet', () => {
+describe('POST on /api/pet', () => {
   test('POST: 201 status response with the pet data inserted', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -128,7 +128,7 @@ describe('POST on /pet', () => {
 
   test('POST: 201 status response with the pet data inserted ignored extras fields on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -155,7 +155,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given invalid url_photo on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'example.com/photos/3',
         age: '2018-01-10',
@@ -170,7 +170,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when not given url_photo on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         age: '2018-01-10',
         description: 'Loyal and friendly, this dog loves to be by your side.',
@@ -184,7 +184,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given invalid age on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-100',
@@ -201,7 +201,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when not given age on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         description: 'Loyal and friendly, this dog loves to be by your side.',
@@ -217,7 +217,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given invalid description on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -232,7 +232,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when not given description on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -246,7 +246,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given description less than 12 characters on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -261,7 +261,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given invalid available on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -276,7 +276,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when not given available on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -290,7 +290,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given invalid name on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -305,7 +305,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when not given name on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -319,7 +319,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given name less than 2 characters on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -334,7 +334,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given invalid shelter_id on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -349,7 +349,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when not given shelter_id on body request', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -363,7 +363,7 @@ describe('POST on /pet', () => {
 
   test('POST: 400 status when given shelter_id on body request that not exist on database', async () => {
     const { body } = await request
-      .post('/pet')
+      .post('/api/pet')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -377,10 +377,10 @@ describe('POST on /pet', () => {
   });
 });
 
-describe('PUT on /pet/:id', () => {
+describe('PUT on /api/pet/:id', () => {
   test('PUT: 200 status response with the pet data updated', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -405,7 +405,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given invalid petId', async () => {
     const { body } = await request
-      .put('/pet/invalid')
+      .put('/api/pet/invalid')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -420,7 +420,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 404 status when given petId that not exist on database', async () => {
     const { body } = await request
-      .put('/pet/100')
+      .put('/api/pet/100')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -435,7 +435,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given invalid url_photo on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'example.com/photos/3',
         age: '2018-01-10',
@@ -450,7 +450,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given invalid age on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-100',
@@ -467,7 +467,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given invalid description on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -482,7 +482,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given description less than 12 characters on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -497,7 +497,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given invalid available on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -512,7 +512,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given invalid name on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -527,7 +527,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given name less than 2 characters on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -542,7 +542,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given invalid shelter_id on body request', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -557,7 +557,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 400 status when given shelter_id on body request that not exist on database', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -572,7 +572,7 @@ describe('PUT on /pet/:id', () => {
 
   test('PUT: 200 status when given others fields on body request that do not need', async () => {
     const { body } = await request
-      .put('/pet/2')
+      .put('/api/pet/2')
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -600,25 +600,25 @@ describe('PUT on /pet/:id', () => {
   });
 });
 
-describe('DELETE on /pet/:id', () => {
+describe('DELETE on /api/pet/:id', () => {
   test('DELETE: 404 status when given petId that not exist on database', async () => {
-    const { body } = await request.delete('/pet/200').expect(404);
+    const { body } = await request.delete('/api/pet/200').expect(404);
     expect(body.message).toBe('pet not found');
   });
 
   test('DELETE: 400 status when given invalid petId', async () => {
-    const { body } = await request.delete('/pet/invalid').expect(400);
+    const { body } = await request.delete('/api/pet/invalid').expect(400);
     expect(body.message).toBe('pet_id query must be a number');
   });
 
   test('DELETE: 400 status when given pet that have adoption', async () => {
-    const { body } = await request.delete('/pet/2').expect(400);
+    const { body } = await request.delete('/api/pet/2').expect(400);
     expect(body.message).toBe(
       'it is necessary to delete the adoption first before deleting the pet',
     );
   });
 
   test('DELETE: 204 status when given pet that have adoption', async () => {
-    await request.delete('/pet/3').expect(204);
+    await request.delete('/api/pet/3').expect(204);
   });
 });

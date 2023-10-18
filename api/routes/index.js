@@ -9,7 +9,7 @@ const routes = (app) => {
     res.status(200).send({ message: 'Welcome to Adopet API' });
   });
 
-  app.use(users, shelters, pets, adoptions, addresses);
+  app.use('/api', users, shelters, pets, adoptions, addresses);
 };
 
 export default routes;
