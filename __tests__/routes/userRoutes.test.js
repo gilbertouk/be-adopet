@@ -15,13 +15,13 @@ afterAll(async () => {
   await db.end();
 });
 
-describe('GET on /users', () => {
+describe('GET on /api/users', () => {
   test('GET: 200 status', async () => {
-    await request.get('/users').expect(200);
+    await request.get('/api/users').expect(200);
   });
 
   test('GET: 200 status with users data from database', async () => {
-    const { body } = await request.get('/users');
+    const { body } = await request.get('/api/users');
     expect(body.users.length).toBe(10);
     body.users.forEach((user) => {
       expect(user).toEqual({
@@ -41,13 +41,13 @@ describe('GET on /users', () => {
   });
 });
 
-describe('GET on /user/:id', () => {
+describe('GET on /api/user/:id', () => {
   test('GET: 200 status', async () => {
-    await request.get('/user/1').expect(200);
+    await request.get('/api/user/1').expect(200);
   });
 
   test('GET: 200 status with users data from database', async () => {
-    const { body } = await request.get('/user/1');
+    const { body } = await request.get('/api/user/1');
     expect(body.user).toEqual({
       id: 1,
       createdAt: expect.any(String),
@@ -64,25 +64,25 @@ describe('GET on /user/:id', () => {
   });
 
   test('GET: 404 status when given user id that not exist on database', async () => {
-    const response = await request.get('/user/100');
+    const response = await request.get('/api/user/100');
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('user not found');
   });
 
   test('GET: 400 status when given invalid user id', async () => {
-    const response = await request.get('/user/invalid');
+    const response = await request.get('/api/user/invalid');
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('userId query must be a number');
   });
 });
 
-describe('GET on /user/:id/address', () => {
+describe('GET on /api/user/:id/address', () => {
   test('GET: 200 status', async () => {
-    await request.get('/user/1/address').expect(200);
+    await request.get('/api/user/1/address').expect(200);
   });
 
   test('GET: 200 status responds with the user data by id given on request', async () => {
-    const { body } = await request.get('/user/1/address');
+    const { body } = await request.get('/api/user/1/address');
     expect(body.user).toEqual({
       id: 1,
       createdAt: '2023-10-12T14:47:10.741Z',
@@ -112,19 +112,19 @@ describe('GET on /user/:id/address', () => {
   });
 
   test('GET: 400 status when given invalid id on request', async () => {
-    const result = await request.get('/user/invalid/address');
+    const result = await request.get('/api/user/invalid/address');
     expect(result.status).toBe(400);
     expect(result.body.message).toBe('userId query must be a number');
   });
 
   test('GET: 404 status when given user id on request that not exist on database', async () => {
-    const result = await request.get('/user/100/address');
+    const result = await request.get('/api/user/100/address');
     expect(result.status).toBe(404);
     expect(result.body.message).toBe('user not found');
   });
 
   test('GET: 200 status when given user id on request that does not have address on database', async () => {
-    const { body } = await request.get('/user/10/address');
+    const { body } = await request.get('/api/user/10/address');
     expect(body.user).toEqual({
       id: 10,
       createdAt: '2023-10-12T14:47:10.741Z',
@@ -144,9 +144,9 @@ describe('GET on /user/:id/address', () => {
   });
 });
 
-describe('POST on /user', () => {
+describe('POST on /api/user', () => {
   test('POST: 400 status when not given name on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878-6124',
@@ -158,7 +158,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when given invalid name on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'test',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
@@ -171,7 +171,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when not given email on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       password: 'jhM8bsada',
       phone: '109-878-6124',
@@ -183,7 +183,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when given invalid email on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9auda.org.au',
       password: 'jhM8bsada',
@@ -196,7 +196,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when not given phone on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       password: 'jhM8bsada',
       email: 'ftopley9@auda.org.au',
@@ -208,7 +208,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when given invalid phone on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
@@ -221,7 +221,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when not given about on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       password: 'jhM8bsada',
       email: 'ftopley9@auda.org.au',
@@ -233,7 +233,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when given invalid about on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
@@ -248,7 +248,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when not given password on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       phone: '109-878-6124',
@@ -260,7 +260,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when given invalid password on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8',
@@ -275,7 +275,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when not given role on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       phone: '109-878-6124',
@@ -287,7 +287,7 @@ describe('POST on /user', () => {
   });
 
   test('POST: 400 status when given invalid role on body request', async () => {
-    const result = await request.post('/user').send({
+    const result = await request.post('/api/user').send({
       name: 'Fabiano Topley',
       email: 'ftopley9@auda.org.au',
       password: 'jhM8',
@@ -303,7 +303,7 @@ describe('POST on /user', () => {
 
   test('POST: 201 status with user data inserted', async () => {
     const { body } = await request
-      .post('/user')
+      .post('/api/user')
       .send({
         name: 'Fabiano Topley',
         email: 'ftopley9@auda.org.au',
@@ -331,7 +331,7 @@ describe('POST on /user', () => {
 
   test('POST: 201 status with user data inserted ignored extras fields on body request', async () => {
     const { body } = await request
-      .post('/user')
+      .post('/api/user')
       .send({
         name: 'Fabiano Topley',
         email: 'ftopley9@auda.org.au',
@@ -357,13 +357,13 @@ describe('POST on /user', () => {
       url_photo: null,
     });
 
-    expect(body.user).not.toContain('test');
+    expect(body.user).not.toHaveProperty('test');
   });
 });
 
-describe('PUT on /user/:id', () => {
+describe('PUT on /api/user/:id', () => {
   test('PUT: 400 status when given invalid id', async () => {
-    const result = await request.put('/user/invalid').send({
+    const result = await request.put('/api/user/invalid').send({
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsad4a',
     });
@@ -372,7 +372,7 @@ describe('PUT on /user/:id', () => {
   });
 
   test('PUT: 400 status when given id does not exist on database', async () => {
-    const result = await request.put('/user/100').send({
+    const result = await request.put('/api/user/100').send({
       email: 'ftopley9@auda.org.au',
       password: 'jhM8bsada',
       phone: '109-878-6124',
@@ -383,7 +383,7 @@ describe('PUT on /user/:id', () => {
   });
 
   test('PUT: 400 status when given invalid name on body request', async () => {
-    const result = await request.put('/user/2').send({
+    const result = await request.put('/api/user/2').send({
       name: 'test',
       password: '135dad434f43',
     });
@@ -392,7 +392,7 @@ describe('PUT on /user/:id', () => {
   });
 
   test('PUT: 400 status when given invalid role on body request', async () => {
-    const result = await request.put('/user/2').send({
+    const result = await request.put('/api/user/2').send({
       role: 'test',
       password: '135dad434f43',
     });
@@ -403,7 +403,7 @@ describe('PUT on /user/:id', () => {
   });
 
   test('PUT: 400 status when given invalid email on body request', async () => {
-    const result = await request.put('/user/2').send({
+    const result = await request.put('/api/user/2').send({
       name: 'Fabiano Topley',
       email: 'ftopley9auda.org.au',
       password: 'jhM8bsada',
@@ -413,7 +413,7 @@ describe('PUT on /user/:id', () => {
   });
 
   test('PUT: 400 status when given invalid phone on body request', async () => {
-    const result = await request.put('/user/2').send({
+    const result = await request.put('/api/user/2').send({
       password: 'jhM8bsada',
       phone: '109-878',
     });
@@ -422,7 +422,7 @@ describe('PUT on /user/:id', () => {
   });
 
   test('PUT: 400 status when given invalid about on body request', async () => {
-    const result = await request.put('/user/2').send({
+    const result = await request.put('/api/user/2').send({
       password: 'jhM8bsada',
       about: 'test',
     });
@@ -433,7 +433,7 @@ describe('PUT on /user/:id', () => {
   });
 
   test('PUT: 400 status when given invalid password on body request', async () => {
-    const result = await request.put('/user/2').send({
+    const result = await request.put('/api/user/2').send({
       password: 'jhM8',
     });
     expect(result.status).toBe(400);
@@ -444,7 +444,7 @@ describe('PUT on /user/:id', () => {
 
   test('PUT: 201 status with user data updated', async () => {
     const { body } = await request
-      .put('/user/2')
+      .put('/api/user/2')
       .send({
         name: 'Gilberto Antonio',
         email: 'gilberto@auda.org.au',
@@ -471,7 +471,7 @@ describe('PUT on /user/:id', () => {
 
   test('PUT: 201 status with user data updated ignored extras fields on body request', async () => {
     const { body } = await request
-      .put('/user/2')
+      .put('/api/user/2')
       .send({
         name: 'Gilberto Antonio',
         email: 'gilberto@auda.org.au',
@@ -496,13 +496,13 @@ describe('PUT on /user/:id', () => {
       url_photo: expect.any(String),
     });
 
-    expect(body.user).not.toContain('test');
+    expect(body.user).not.toHaveProperty('test');
   });
 });
 
-describe('DELETE on /user/:id', () => {
+describe('DELETE on /api/user/:id', () => {
   test('DELETE: 400 status when try delete user that have pets adoptions on database', async () => {
-    const response = await request.delete('/user/1').expect(400);
+    const response = await request.delete('/api/user/1').expect(400);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe(
       'it was not possible to delete the user because it has registered pets adoption',
@@ -510,18 +510,18 @@ describe('DELETE on /user/:id', () => {
   });
 
   test('DELETE: 204 status no content', async () => {
-    const response = await request.delete('/user/10');
+    const response = await request.delete('/api/user/10');
     expect(response.status).toBe(204);
   });
 
   test('DELETE: 404 status when given id does not exist on database', async () => {
-    const response = await request.delete('/user/100');
+    const response = await request.delete('/api/user/100');
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('user not found');
   });
 
   test('DELETE: 400 status when given invalid id', async () => {
-    const response = await request.delete('/user/invalid');
+    const response = await request.delete('/api/user/invalid');
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('userId query must be a number');
   });

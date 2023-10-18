@@ -1,9 +1,4 @@
-import { PrismaClient } from '@prisma/client';
 import UserModel from '../models/userModel.js';
-
-const prisma = new PrismaClient({
-  // log: ['query', 'info', 'warn', 'error'],
-});
 
 class UserController {
   static async getAllUsers(req, res, next) {
@@ -64,9 +59,9 @@ class UserController {
   static async deleteUser(req, res, next) {
     try {
       const userId = req.params.id;
-      const user = await UserModel.deleteUserById(userId);
+      await UserModel.deleteUserById(userId);
 
-      return res.sendStatus(204);
+      res.sendStatus(204);
     } catch (err) {
       next(err);
     }
