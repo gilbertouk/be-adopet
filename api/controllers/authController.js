@@ -1,6 +1,6 @@
 import AuthModel from '../models/authModel.js';
 import AuthService from '../services/authService.js';
-import signAccessToken from '../services/jwtService.js';
+import { signAccessToken } from '../services/jwtService.js';
 
 class AuthController {
   static async authLogin(req, res, next) {

@@ -8,15 +8,19 @@ class AuthService {
   }
 
   static async authenticate(password, hash) {
-    const result = bcrypt.compareSync(password, hash);
+    const isValidPassword = await bcrypt.compare(password, hash);
 
-    if (result) {
+    if (isValidPassword) {
       console.log('Usuário autenticado com sucesso');
-      return result;
+      return isValidPassword;
     }
 
     console.log('Usuário ou senha incorretos.');
-    return result;
+    const objErr = {
+      status: 401,
+      message: 'email/password not valid',
+    };
+    throw objErr;
   }
 }
 

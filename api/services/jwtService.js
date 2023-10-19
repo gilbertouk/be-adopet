@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-function signAccessToken(userId) {
+async function signAccessToken(userId) {
   return new Promise((resolve, reject) => {
     const payload = {};
     const secret = process.env.ACCESS_TOKEN_SECRET;
@@ -19,4 +19,25 @@ function signAccessToken(userId) {
   });
 }
 
-export default signAccessToken;
+async function verifyAccessToken(req, res, next) {
+  if (!req.headers['authorization']) {
+    const objErr = { status: 401, message: 'unauthorized user' };
+    return next(objErr);
+  }
+
+  const authHeader = req.headers['authorization'];
+  const bearerToken = authHeader.split(' ');
+  const token = bearerToken[1];
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, payload) => {
+    if (err) {
+      const objErr = { status: 401, message: 'unauthorized user' };
+      next(objErr);
+      return next(objErr);
+    }
+    req.payload = payload;
+    next();
+  });
+}
+
+export { signAccessToken, verifyAccessToken };
