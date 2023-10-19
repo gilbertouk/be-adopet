@@ -14,6 +14,7 @@ adopet API.
 - Express
 - PostgresSQL
 - Prisma ORM
+- Redis
 
 ### Installing dependencies
 

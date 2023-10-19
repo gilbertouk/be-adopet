@@ -15,7 +15,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   name      String
-  email     String
+  email     String  @unique
   about     String
   url_photo String?
   phone     String
@@ -31,7 +31,7 @@ model Shelter {
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   name      String
-  email     String
+  email     String  @unique
   password  String
   phone     String
   about     String
