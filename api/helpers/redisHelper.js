@@ -1,9 +1,6 @@
 import { createClient } from 'redis';
 
-const client = createClient({
-  port: 6379,
-  host: '127.0.0.1',
-});
+const client = createClient();
 
 await client.connect(() => {
   console.log('Client connected to redis...');
