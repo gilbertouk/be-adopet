@@ -1,10 +1,14 @@
-# sensAI_API
+<p align="center">
+<img loading="lazy" src="https://img.shields.io/static/v1?label=STATUS&message=project%20in%20development&color=GREEN&style=for-the-badge"/>
+</p>
+
+# Adopet REST API
 
 Project in development
 
 ## Description
 
-adopet API.
+Adopet, a REST API for a platform to connect people who want to adopt pets and shelters.
 
 ## Getting Started
 
@@ -12,13 +16,13 @@ adopet API.
 
 - Node
 - Express
-- PostgresSQL
+- PostgreSQL
 - Prisma ORM
 - Redis
 
 ### Installing dependencies
 
-Paste into terminal
+Paste into terminal the command below to install all project dependencies.
 
 ```
 npm i
@@ -28,17 +32,19 @@ npm i
 
 #### Database
 
-We need to create environment variables for our database.
+We need to create environment variables for our PostgreSQL database.
 
 Create a file called `.env` in the base of the repository.
 
 Paste inside the `.env` file:
 
+#### PostgreSQL environment variables config:
+
 ```
 DATABASE_URL=
 ```
 
-Populate the `DATABASE_URL` variable with your own MongoDB URL.
+Populate the `DATABASE_URL` variable with your own PostgreSQL URL.
 
 The URL will be in the format of `postgresql://USER:PASSWORD@HOST:PORT/DATABASE`.
 
@@ -64,6 +70,36 @@ npx prisma migrate reset -f
 
 [Database schema](https://whimsical.com/adopet-RrxjyDRcVHzmjPcm9gQq8d)
 
+### JWT config
+
+Before starting our API service, we need to configure the JWT Token secret keys.
+
+We need to create environment variables for our JWT Token.
+
+In the same `.env` file we need to create the environment variables below.
+
+```
+ACCESS_TOKEN_SECRET=
+REFRESH_TOKEN_SECRET=
+TOKEN_ISSUER=
+
+```
+
+Populate the `ACCESS_TOKEN_SECRET` and `REFRESH_TOKEN_SECRET` variables with some random keys. For example:
+
+```
+ACCESS_TOKEN_SECRET=Ajt3udOZgum4eFLctSoAA8cZJVTyZzmw
+REFRESH_TOKEN_SECRET=Vob0otvJHAp0PN2enqcWVkfEzl4okGL8
+```
+
+And populate the `TOKEN_ISSUER` variable with the name of issuer. For example:
+
+```
+TOKEN_ISSUER=adopet.com
+```
+
+If you want, you can use this website to generate random keys [randomkeygen](https://randomkeygen.com/)
+
 ### Hosting
 
 Paste in the terminal:
@@ -71,3 +107,20 @@ Paste in the terminal:
 ```
 npm run start
 ```
+
+## Things to do
+
+- Fix some tests that failed after implementing login and token
+- Implement documentation with [swagger.io](https://swagger.io/docs/open-source-tools/swagger-editor/)
+- Create the front end to use the adoptet API
+
+## Author
+
+👤 **Gilberto Silva**
+
+- Github: [@gilbertouk](https://github.com/gilbertouk)
+- LinkedIn: [@gilbertoantonio](https://linkedin.com/in/gilbertoantonio)
+
+## Show your support
+
+Give a ⭐️ if this project helped you!
