@@ -110,7 +110,6 @@ npm run start
 
 ## Things to do
 
-- Fix some tests that failed after implementing login and token
 - Implement documentation with [swagger.io](https://swagger.io/docs/open-source-tools/swagger-editor/)
 - Create the front end to use the adoptet API
 
