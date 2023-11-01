@@ -1,11 +1,27 @@
-/* eslint-disable object-curly-newline */
 import supertest from 'supertest';
-import { afterAll, beforeEach, describe, expect, test } from '@jest/globals';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  test,
+} from '@jest/globals';
 import app from '../../api/index.js';
 import seed from '../../db/seeds/seed.js';
 import db from '../../db/connection.js';
 
 const request = supertest(app);
+let accessToken = '';
+
+beforeAll(async () => {
+  const userLogin = {
+    email: 'lmarzella0@spotify.com',
+    password: '12345678',
+  };
+  const { body } = await request.post('/api/login').send(userLogin);
+  accessToken = body.accessToken;
+});
 
 beforeEach(async () => {
   await seed();
@@ -13,6 +29,7 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await db.end();
+  accessToken = '';
 });
 
 describe('POST on /api/user/:user_id/address', () => {
@@ -26,6 +43,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const { body } = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(201);
     expect(body.address).toEqual({
@@ -48,6 +66,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/invalid/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('userId query must be a number');
@@ -63,6 +82,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/100/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('user not found');
@@ -77,6 +97,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('number field is required');
@@ -92,6 +113,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('number field must be a string');
@@ -106,6 +128,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('postcode field is required');
@@ -121,6 +144,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('postcode field must be a string');
@@ -135,6 +159,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('address field is required');
@@ -150,6 +175,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('address field must be a string');
@@ -164,6 +190,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('city field is required');
@@ -179,6 +206,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('city field must be a string');
@@ -194,6 +222,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const response = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('country field must be a string');
@@ -208,6 +237,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const { body } = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(201);
     expect(body.address).toEqual({
@@ -232,6 +262,7 @@ describe('POST on /api/user/:user_id/address', () => {
     };
     const { body } = await request
       .post('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(201);
     expect(body.address).toEqual({
@@ -262,6 +293,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const { body } = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(201);
     expect(body.address).toEqual({
@@ -284,6 +316,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/invalid/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('shelterId query must be a number');
@@ -299,6 +332,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/100/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('shelter not found');
@@ -313,6 +347,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('number field is required');
@@ -328,6 +363,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('number field must be a string');
@@ -342,6 +378,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('postcode field is required');
@@ -357,6 +394,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('postcode field must be a string');
@@ -371,6 +409,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('address field is required');
@@ -386,6 +425,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('address field must be a string');
@@ -400,6 +440,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('city field is required');
@@ -415,6 +456,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('city field must be a string');
@@ -430,6 +472,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const response = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('country field must be a string');
@@ -444,6 +487,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const { body } = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(201);
     expect(body.address).toEqual({
@@ -468,6 +512,7 @@ describe('POST on /api/shelter/:user_id/address', () => {
     };
     const { body } = await request
       .post('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(201);
     expect(body.address).toEqual({
@@ -498,6 +543,7 @@ describe('PUT on /api/user/:user_id/address', () => {
     };
     const { body } = await request
       .put('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(200);
     expect(body.address).toEqual({
@@ -520,6 +566,7 @@ describe('PUT on /api/user/:user_id/address', () => {
     };
     const response = await request
       .put('/api/user/invalid/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('userId query must be a number');
@@ -535,6 +582,7 @@ describe('PUT on /api/user/:user_id/address', () => {
     };
     const response = await request
       .put('/api/user/100/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('user not found');
@@ -548,7 +596,10 @@ describe('PUT on /api/user/:user_id/address', () => {
       city: 'Goiania',
       country: 'Brazil',
     };
-    const response = await request.put('/api/user/1/address').send(addressMock);
+    const response = await request
+      .put('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('number field must be a string');
   });
@@ -561,7 +612,10 @@ describe('PUT on /api/user/:user_id/address', () => {
       city: 'Goiania',
       country: 'Brazil',
     };
-    const response = await request.put('/api/user/1/address').send(addressMock);
+    const response = await request
+      .put('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('postcode field must be a string');
   });
@@ -574,7 +628,10 @@ describe('PUT on /api/user/:user_id/address', () => {
       city: 'Goiania',
       country: 'Brazil',
     };
-    const response = await request.put('/api/user/1/address').send(addressMock);
+    const response = await request
+      .put('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('address field must be a string');
   });
@@ -586,7 +643,10 @@ describe('PUT on /api/user/:user_id/address', () => {
       city: false,
       country: 'Brazil',
     };
-    const response = await request.put('/api/user/1/address').send(addressMock);
+    const response = await request
+      .put('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('city field must be a string');
   });
@@ -599,7 +659,10 @@ describe('PUT on /api/user/:user_id/address', () => {
       city: 'Goiania',
       country: 20145,
     };
-    const response = await request.put('/api/user/1/address').send(addressMock);
+    const response = await request
+      .put('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('country field must be a string');
   });
@@ -615,6 +678,7 @@ describe('PUT on /api/user/:user_id/address', () => {
     };
     const { body } = await request
       .put('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(200);
     expect(body.address).toEqual({
@@ -641,6 +705,7 @@ describe('PUT on /api/user/:user_id/address', () => {
     };
     const { body } = await request
       .put('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(400);
     expect(body.message).toBe('user does not have an address');
@@ -658,6 +723,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const { body } = await request
       .put('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(200);
     expect(body.address).toEqual({
@@ -680,6 +746,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const response = await request
       .put('/api/shelter/invalid/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('shelterId query must be a number');
@@ -695,6 +762,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const response = await request
       .put('/api/shelter/100/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('shelter not found');
@@ -710,6 +778,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const response = await request
       .put('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('number field must be a string');
@@ -725,6 +794,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const response = await request
       .put('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('postcode field must be a string');
@@ -740,6 +810,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const response = await request
       .put('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('address field must be a string');
@@ -754,6 +825,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const response = await request
       .put('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('city field must be a string');
@@ -769,6 +841,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const response = await request
       .put('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('country field must be a string');
@@ -785,6 +858,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const { body } = await request
       .put('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(200);
     expect(body.address).toEqual({
@@ -811,6 +885,7 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
     };
     const { body } = await request
       .put('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send(addressMock)
       .expect(400);
     expect(body.message).toBe('shelter does not have an address');
@@ -819,23 +894,32 @@ describe('PUT on /api/shelter/:shelter_id/address', () => {
 
 describe('DELETE on /api/user/:user_id/address', () => {
   test('DELETE: 204 status no content', async () => {
-    await request.delete('/api/user/1/address').expect(204);
+    await request
+      .delete('/api/user/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(204);
   });
 
   test('DELETE: 400 status when given invalid id', async () => {
-    const response = await request.delete('/api/user/invalid/address');
+    const response = await request
+      .delete('/api/user/invalid/address')
+      .set('Authorization', `Bearer ${accessToken}`);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('userId query must be a number');
   });
 
   test('DELETE: 404 status when given user id that does not exist on database', async () => {
-    const response = await request.delete('/api/user/100/address');
+    const response = await request
+      .delete('/api/user/100/address')
+      .set('Authorization', `Bearer ${accessToken}`);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('user not found');
   });
 
   test('DELETE: 400 status when given user id that does not have address on database', async () => {
-    const response = await request.delete('/api/user/10/address');
+    const response = await request
+      .delete('/api/user/10/address')
+      .set('Authorization', `Bearer ${accessToken}`);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('user does not have an address');
   });
@@ -843,23 +927,32 @@ describe('DELETE on /api/user/:user_id/address', () => {
 
 describe('DELETE on /api/shelter/:shelter_id/address', () => {
   test('DELETE: 204 status no content', async () => {
-    await request.delete('/api/shelter/1/address').expect(204);
+    await request
+      .delete('/api/shelter/1/address')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(204);
   });
 
   test('DELETE: 400 status when given invalid id', async () => {
-    const response = await request.delete('/api/shelter/invalid/address');
+    const response = await request
+      .delete('/api/shelter/invalid/address')
+      .set('Authorization', `Bearer ${accessToken}`);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('shelterId query must be a number');
   });
 
   test('DELETE: 404 status when given shelter id that does not exist on database', async () => {
-    const response = await request.delete('/api/shelter/100/address');
+    const response = await request
+      .delete('/api/shelter/100/address')
+      .set('Authorization', `Bearer ${accessToken}`);
     expect(response.status).toBe(404);
     expect(response.body.message).toBe('shelter not found');
   });
 
   test('DELETE: 400 status when given shelter id that does not have address on database', async () => {
-    const response = await request.delete('/api/shelter/10/address');
+    const response = await request
+      .delete('/api/shelter/10/address')
+      .set('Authorization', `Bearer ${accessToken}`);
     expect(response.status).toBe(400);
     expect(response.body.message).toBe('shelter does not have an address');
   });

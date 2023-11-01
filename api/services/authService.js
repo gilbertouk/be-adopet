@@ -11,11 +11,11 @@ class AuthService {
     const isValidPassword = await bcrypt.compare(password, hash);
 
     if (isValidPassword) {
-      console.log('Usuário autenticado com sucesso');
+      console.log('User successfully authenticated');
       return isValidPassword;
     }
 
-    console.log('Usuário ou senha incorretos.');
+    console.log('email/password not valid');
     const objErr = {
       status: 401,
       message: 'email/password not valid',

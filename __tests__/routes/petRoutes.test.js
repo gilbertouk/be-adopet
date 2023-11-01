@@ -1,11 +1,27 @@
-/* eslint-disable object-curly-newline */
 import supertest from 'supertest';
-import { afterAll, beforeEach, describe, expect, test } from '@jest/globals';
+import {
+  afterAll,
+  beforeAll,
+  beforeEach,
+  describe,
+  expect,
+  test,
+} from '@jest/globals';
 import app from '../../api/index.js';
 import seed from '../../db/seeds/seed.js';
 import db from '../../db/connection.js';
 
 const request = supertest(app);
+let accessToken = '';
+
+beforeAll(async () => {
+  const userLogin = {
+    email: 'lmarzella0@spotify.com',
+    password: '12345678',
+  };
+  const { body } = await request.post('/api/login').send(userLogin);
+  accessToken = body.accessToken;
+});
 
 beforeEach(async () => {
   await seed();
@@ -13,15 +29,21 @@ beforeEach(async () => {
 
 afterAll(async () => {
   await db.end();
+  accessToken = '';
 });
 
 describe('GET on /api/pets', () => {
   test('GET: 200 status', async () => {
-    await request.get('/api/pets').expect(200);
+    await request
+      .get('/api/pets')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
   });
 
   test('GET: 200 status with pets data from database', async () => {
-    const { body } = await request.get('/api/pets');
+    const { body } = await request
+      .get('/api/pets')
+      .set('Authorization', `Bearer ${accessToken}`);
 
     expect(body.pets.length).toBe(15);
     body.pets.forEach((pet) => {
@@ -44,11 +66,16 @@ describe('GET on /api/pets', () => {
 
 describe('GET on /api/pets/available', () => {
   test('GET: 200 status', async () => {
-    await request.get('/api/pets/available').expect(200);
+    await request
+      .get('/api/pets/available')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(200);
   });
 
   test('GET: 200 status with available pets data from database', async () => {
-    const { body } = await request.get('/api/pets/available');
+    const { body } = await request
+      .get('/api/pets/available')
+      .set('Authorization', `Bearer ${accessToken}`);
 
     expect(body.petsAvailable.length).toBe(11);
     body.petsAvailable.forEach((pet) => {
@@ -71,11 +98,16 @@ describe('GET on /api/pets/available', () => {
 
 describe('GET on /api/pet/:id', () => {
   test('GET: 200 status', async () => {
-    await request.get('/api/pet/1').expect(200);
+    await request
+      .get('/api/pet/1')
+      .expect(200)
+      .set('Authorization', `Bearer ${accessToken}`);
   });
 
   test('GET: 200 status with pet data from database by petId', async () => {
-    const { body } = await request.get('/api/pet/1');
+    const { body } = await request
+      .get('/api/pet/1')
+      .set('Authorization', `Bearer ${accessToken}`);
     expect(body.pet).toEqual({
       id: 1,
       createdAt: '2023-10-12T14:47:10.759Z',
@@ -90,12 +122,18 @@ describe('GET on /api/pet/:id', () => {
   });
 
   test('GET: 404 status when given petId that not exist on database', async () => {
-    const { body } = await request.get('/api/pet/100').expect(404);
+    const { body } = await request
+      .get('/api/pet/100')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(404);
     expect(body.message).toBe('pet not found');
   });
 
   test('GET: 400 status when given invalid petId', async () => {
-    const { body } = await request.get('/api/pet/invalid').expect(400);
+    const { body } = await request
+      .get('/api/pet/invalid')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(400);
     expect(body.message).toBe('petId query must be a number');
   });
 });
@@ -104,6 +142,7 @@ describe('POST on /api/pet', () => {
   test('POST: 201 status response with the pet data inserted', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -129,6 +168,7 @@ describe('POST on /api/pet', () => {
   test('POST: 201 status response with the pet data inserted ignored extras fields on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -156,6 +196,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given invalid url_photo on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'example.com/photos/3',
         age: '2018-01-10',
@@ -171,6 +212,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when not given url_photo on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         age: '2018-01-10',
         description: 'Loyal and friendly, this dog loves to be by your side.',
@@ -185,6 +227,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given invalid age on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-100',
@@ -202,6 +245,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when not given age on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         description: 'Loyal and friendly, this dog loves to be by your side.',
@@ -218,6 +262,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given invalid description on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -233,6 +278,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when not given description on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -247,6 +293,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given description less than 12 characters on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -262,6 +309,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given invalid available on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -277,6 +325,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when not given available on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -291,6 +340,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given invalid name on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -306,6 +356,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when not given name on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -320,6 +371,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given name less than 2 characters on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -335,6 +387,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given invalid shelter_id on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -350,6 +403,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when not given shelter_id on body request', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -364,6 +418,7 @@ describe('POST on /api/pet', () => {
   test('POST: 400 status when given shelter_id on body request that not exist on database', async () => {
     const { body } = await request
       .post('/api/pet')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -381,6 +436,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 200 status response with the pet data updated', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -406,6 +462,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given invalid petId', async () => {
     const { body } = await request
       .put('/api/pet/invalid')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -421,6 +478,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 404 status when given petId that not exist on database', async () => {
     const { body } = await request
       .put('/api/pet/100')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -436,6 +494,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given invalid url_photo on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'example.com/photos/3',
         age: '2018-01-10',
@@ -451,6 +510,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given invalid age on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-100',
@@ -468,6 +528,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given invalid description on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -483,6 +544,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given description less than 12 characters on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -498,6 +560,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given invalid available on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -513,6 +576,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given invalid name on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -528,6 +592,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given name less than 2 characters on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -543,6 +608,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given invalid shelter_id on body request', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -558,6 +624,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 400 status when given shelter_id on body request that not exist on database', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -573,6 +640,7 @@ describe('PUT on /api/pet/:id', () => {
   test('PUT: 200 status when given others fields on body request that do not need', async () => {
     const { body } = await request
       .put('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
       .send({
         url_photo: 'http://example.com/photos/3',
         age: '2018-01-10',
@@ -602,23 +670,35 @@ describe('PUT on /api/pet/:id', () => {
 
 describe('DELETE on /api/pet/:id', () => {
   test('DELETE: 404 status when given petId that not exist on database', async () => {
-    const { body } = await request.delete('/api/pet/200').expect(404);
+    const { body } = await request
+      .delete('/api/pet/200')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(404);
     expect(body.message).toBe('pet not found');
   });
 
   test('DELETE: 400 status when given invalid petId', async () => {
-    const { body } = await request.delete('/api/pet/invalid').expect(400);
+    const { body } = await request
+      .delete('/api/pet/invalid')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(400);
     expect(body.message).toBe('pet_id query must be a number');
   });
 
   test('DELETE: 400 status when given pet that have adoption', async () => {
-    const { body } = await request.delete('/api/pet/2').expect(400);
+    const { body } = await request
+      .delete('/api/pet/2')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(400);
     expect(body.message).toBe(
       'it is necessary to delete the adoption first before deleting the pet',
     );
   });
 
   test('DELETE: 204 status when given pet that have adoption', async () => {
-    await request.delete('/api/pet/3').expect(204);
+    await request
+      .delete('/api/pet/3')
+      .set('Authorization', `Bearer ${accessToken}`)
+      .expect(204);
   });
 });
