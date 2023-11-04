@@ -20,7 +20,7 @@ model User {
   url_photo String?
   phone     String
   password  String
-  role      String
+  role      String  @default("TUTOR")
   active    Boolean @default(true)
   address   Address?
   adoption  Adoption[]

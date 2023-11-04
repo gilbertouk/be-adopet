@@ -1,4 +1,5 @@
 import AuthModel from '../models/authModel.js';
+import UserModel from '../models/userModel.js';
 import AuthService from '../services/authService.js';
 import {
   signAccessToken,
@@ -43,6 +44,34 @@ class AuthController {
       console.log(userId);
       await removeRefreshToken(userId);
       res.sendStatus(204);
+    } catch (err) {
+      next(err);
+    }
+  }
+
+  static async authRegister(req, res, next) {
+    try {
+      const { body } = req;
+      const userExist = await AuthModel.selectUserByEmail(body.email);
+
+      if (userExist) {
+        const objErr = {
+          status: 400,
+          message: 'email already in use',
+        };
+        throw objErr;
+      }
+
+      const userData = { ...body };
+
+      userData.password = await AuthService.createHash(userData.password);
+
+      const user = await UserModel.insertUser(userData);
+
+      const accessToken = await signAccessToken(user.id);
+      const refreshToken = await signRefreshToken(user.id);
+
+      res.status(201).send({ accessToken, refreshToken });
     } catch (err) {
       next(err);
     }

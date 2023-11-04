@@ -6,7 +6,7 @@ const router = express.Router();
 router
   .post('/login', AuthController.authLogin)
   .post('/refresh-token', AuthController.refreshToken)
-  .delete('/logout', AuthController.authLogout);
-// .post('/register', AuthController.authRegister)
+  .delete('/logout', AuthController.authLogout)
+  .post('/register', AuthController.authRegister);
 
 export default router;

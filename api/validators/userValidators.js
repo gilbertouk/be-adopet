@@ -17,7 +17,7 @@ const userSchema = z.object({
   password: z
     .string({ required_error: 'password field is required' })
     .min(8, 'password must be 8 or more characters long'),
-  role: z.enum(['TUTOR', 'ADMIN']),
+  role: z.enum(['TUTOR', 'ADMIN']).default('TUTOR'),
   // active: z.boolean(),
 });
 
