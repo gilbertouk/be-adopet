@@ -161,21 +161,21 @@ async function seed() {
     await db.query(`
       INSERT INTO public."Pet" ("createdAt", "updatedAt", url_photo, age, description, available, name, shelter_id)
       VALUES 
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/1', '2019-05-10 00:00:00', 'Cute and cuddly, this puppy will steal your heart.', true, 'Buddy', 1),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/2', '2020-01-15 00:00:00', 'Affectionate and playful, this kitten is full of energy.', false, 'Mittens', 2),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/3', '2018-08-23 00:00:00', 'Loyal and friendly, this dog loves to be by your side.', true, 'Rocky', 3),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/4', '2021-02-19 00:00:00', 'Gentle and sweet, this cat will make a perfect lap cat.', false, 'Luna', 4),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/5', '2017-06-12 00:00:00', 'Adventurous and curious, this kitten is always exploring.', true, 'Whiskers', 5),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/6', '2016-04-05 00:00:00', 'Elegant and sophisticated, this cat will add grace to your home.', true, 'Midnight', 6),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/7', '2019-11-01 00:00:00', 'Lively and energetic, this pup will keep you on your toes.', false, 'Max', 7),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/8', '2015-02-14 00:00:00', 'Friendly and affectionate, this dog loves attention.', true, 'Daisy', 8),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/9', '2014-08-19 00:00:00', 'Intelligent and protective, this dog will guard your home.', true, 'Rufus', 9),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/10', '2022-03-05 00:00:00', 'Tiny and adorable, this kitten will melt your heart.', true, 'Peanut', 9),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/11', '2013-05-12 00:00:00', 'Active and playful, this dog loves to run and play.', false, 'Charlie', 4),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/12', '2012-09-29 00:00:00', 'Calm and relaxed, this cat is the perfect lap cat.', true, 'Fluffy', 7),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/13', '2019-12-10 00:00:00', 'Smart and friendly, this dog is eager to please.', true, 'Bailey', 8),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/14', '2020-06-20 00:00:00', 'Graceful and elegant, this cat is a true beauty.', true, 'Sophie', 2),
-      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://example.com/photos/15', '2018-02-15 00:00:00', 'Laid back and mellow, this dog is perfect for a quiet home.', true, 'Oliver', 1);    
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://media.4-paws.org/1/e/d/6/1ed6da75afe37d82757142dc7c6633a532f53a7d/VIER%20PFOTEN_2019-03-15_001-2886x1999-1920x1330.jpg', '2019-05-10 00:00:00', 'Cute and cuddly, this puppy will steal your heart.', true, 'Buddy', 1),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Cute-kittens-12929201-1600-1200.jpg', '2020-01-15 00:00:00', 'Affectionate and playful, this kitten is full of energy.', false, 'Mittens', 2),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://www.vet.cornell.edu/sites/default/files/dog%20image%201-unsplash.JPG', '2018-08-23 00:00:00', 'Loyal and friendly, this dog loves to be by your side.', true, 'Rocky', 3),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Cat_November_2010-1a.jpg/767px-Cat_November_2010-1a.jpg', '2021-02-19 00:00:00', 'Gentle and sweet, this cat will make a perfect lap cat.', false, 'Luna', 4),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Photo_of_a_kitten.jpg/800px-Photo_of_a_kitten.jpg', '2017-06-12 00:00:00', 'Adventurous and curious, this kitten is always exploring.', true, 'Whiskers', 5),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://t4.ftcdn.net/jpg/00/97/58/97/360_F_97589769_t45CqXyzjz0KXwoBZT9PRaWGHRk5hQqQ.jpg', '2016-04-05 00:00:00', 'Elegant and sophisticated, this cat will add grace to your home.', true, 'Midnight', 6),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://www.thefarmersdog.com/digest/wp-content/uploads/2021/05/Pug-potty-2-1400x807.jpg', '2019-11-01 00:00:00', 'Lively and energetic, this pup will keep you on your toes.', false, 'Max', 7),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://cdn.britannica.com/16/234216-050-C66F8665/beagle-hound-dog.jpg', '2015-02-14 00:00:00', 'Friendly and affectionate, this dog loves attention.', true, 'Daisy', 8),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://static.vecteezy.com/system/resources/previews/005/857/332/non_2x/funny-portrait-of-cute-corgi-dog-outdoors-free-photo.jpg', '2014-08-19 00:00:00', 'Intelligent and protective, this dog will guard your home.', true, 'Rufus', 9),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://upload.wikimedia.org/wikipedia/commons/a/a5/Red_Kitten_01.jpg', '2022-03-05 00:00:00', 'Tiny and adorable, this kitten will melt your heart.', true, 'Peanut', 9),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://www.thesprucepets.com/thmb/hxWjs7evF2hP1Fb1c1HAvRi_Rw0=/2765x0/filters:no_upscale():strip_icc()/chinese-dog-breeds-4797219-hero-2a1e9c5ed2c54d00aef75b05c5db399c.jpg', '2013-05-12 00:00:00', 'Active and playful, this dog loves to run and play.', false, 'Charlie', 4),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://developer.ridgerun.com/wiki/images/8/80/Egyptian_cat.jpg', '2012-09-29 00:00:00', 'Calm and relaxed, this cat is the perfect lap cat.', true, 'Fluffy', 7),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://cdn.britannica.com/46/233846-050-8D30A43B/Boxer-dog.jpg', '2019-12-10 00:00:00', 'Smart and friendly, this dog is eager to please.', true, 'Bailey', 8),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://static.vecteezy.com/system/resources/previews/002/098/203/non_2x/silver-tabby-cat-sitting-on-green-background-free-photo.jpg', '2020-06-20 00:00:00', 'Graceful and elegant, this cat is a true beauty.', true, 'Sophie', 2),
+      ('2023-10-12 14:47:10.759', '2023-10-12 14:47:10.759', 'https://upload.wikimedia.org/wikipedia/commons/6/64/White_Pomeranian.jpg', '2018-02-15 00:00:00', 'Laid back and mellow, this dog is perfect for a quiet home.', true, 'Oliver', 1);    
     `);
 
     await db.query(`
