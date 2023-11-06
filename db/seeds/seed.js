@@ -19,7 +19,7 @@ async function seed() {
         "url_photo" TEXT,
         "phone" TEXT NOT NULL,
         "password" TEXT NOT NULL,
-        "role" TEXT NOT NULL DEFAULT "TUTOR",
+        "role" TEXT NOT NULL DEFAULT 'TUTOR',
         "active" BOOLEAN NOT NULL DEFAULT true,
     
         CONSTRAINT "User_pkey" PRIMARY KEY ("id")
