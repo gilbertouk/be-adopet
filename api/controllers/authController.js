@@ -14,6 +14,15 @@ class AuthController {
       const { email, password } = req.body;
       const userExist = await AuthModel.selectUserByEmail(email);
 
+      if (!userExist) {
+        const objErr = {
+          status: 400,
+          message: 'invalid email/password',
+        };
+
+        throw objErr;
+      }
+
       await AuthService.authenticate(password, userExist.password);
 
       const accessToken = await signAccessToken(userExist.id);
@@ -41,7 +50,6 @@ class AuthController {
     try {
       const { refreshToken } = req.body;
       const userId = await verifyRefreshToken(refreshToken);
-      console.log(userId);
       await removeRefreshToken(userId);
       res.sendStatus(204);
     } catch (err) {
