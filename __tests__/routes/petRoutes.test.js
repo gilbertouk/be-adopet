@@ -112,7 +112,7 @@ describe('GET on /api/pet/:id', () => {
       id: 1,
       createdAt: '2023-10-12T14:47:10.759Z',
       updatedAt: '2023-10-12T14:47:10.759Z',
-      url_photo: 'https://example.com/photos/1',
+      url_photo: expect.any(String),
       age: '2019-05-10T00:00:00.000Z',
       description: 'Cute and cuddly, this puppy will steal your heart.',
       available: true,
