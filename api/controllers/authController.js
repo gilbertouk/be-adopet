@@ -48,7 +48,7 @@ class AuthController {
       console.dir(cookies);
 
       if (!cookies?.jwt) {
-        return res.sendStatus(401);
+        res.sendStatus(401);
       }
 
       const oldRefreshToken = cookies.jwt;
@@ -56,7 +56,7 @@ class AuthController {
       const userId = await verifyRefreshToken(oldRefreshToken);
 
       const accessToken = await signAccessToken(userId);
-      return res.send({ accessToken });
+      res.send({ accessToken });
     } catch (err) {
       next(err);
     }
