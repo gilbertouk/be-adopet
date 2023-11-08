@@ -80,7 +80,7 @@ async function signRefreshToken(userId) {
 
 async function verifyRefreshToken(refreshToken) {
   if (!refreshToken) {
-    const objErr = { status: 400, message: 'bad request' };
+    const objErr = { status: 403, message: 'forbidden' };
     throw objErr;
   }
 
