@@ -28,7 +28,15 @@ class AuthController {
       const accessToken = await signAccessToken(userExist.id);
       const refreshToken = await signRefreshToken(userExist.id);
 
-      res.status(200).send({ accessToken, refreshToken });
+      res
+        .status(200)
+        .cookie('jwt', refreshToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'None',
+          maxAge: 365 * 24 * 60 * 60,
+        })
+        .send({ accessToken });
     } catch (err) {
       next(err);
     }
@@ -36,11 +44,19 @@ class AuthController {
 
   static async refreshToken(req, res, next) {
     try {
-      const { refreshToken } = req.body;
-      const userId = await verifyRefreshToken(refreshToken);
+      const { cookies } = req;
+      console.dir(cookies);
+
+      if (!cookies?.jwt) {
+        return res.sendStatus(401);
+      }
+
+      const oldRefreshToken = cookies.jwt;
+
+      const userId = await verifyRefreshToken(oldRefreshToken);
+
       const accessToken = await signAccessToken(userId);
-      const newRefreshToken = await signRefreshToken(userId);
-      res.send({ accessToken, refreshToken: newRefreshToken });
+      return res.send({ accessToken });
     } catch (err) {
       next(err);
     }
@@ -48,9 +64,19 @@ class AuthController {
 
   static async authLogout(req, res, next) {
     try {
-      const { refreshToken } = req.body;
+      const { cookies } = req;
+      if (!cookies?.jwt) {
+        res.sendStatus(204);
+      }
+
+      const refreshToken = cookies.jwt;
       const userId = await verifyRefreshToken(refreshToken);
       await removeRefreshToken(userId);
+      res.clearCookie('jwt', {
+        httpOnly: true,
+        sameSite: 'None',
+        secure: true,
+      });
       res.sendStatus(204);
     } catch (err) {
       next(err);
@@ -76,10 +102,7 @@ class AuthController {
 
       const user = await UserModel.insertUser(userData);
 
-      const accessToken = await signAccessToken(user.id);
-      const refreshToken = await signRefreshToken(user.id);
-
-      res.status(201).send({ accessToken, refreshToken });
+      res.status(201).send({ user });
     } catch (err) {
       next(err);
     }
