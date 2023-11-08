@@ -34,7 +34,7 @@ class AuthController {
           httpOnly: true,
           secure: true,
           sameSite: 'None',
-          maxAge: 365 * 24 * 60 * 60,
+          maxAge: 24 * 60 * 60 * 1000,
         })
         .send({ accessToken });
     } catch (err) {
@@ -45,18 +45,20 @@ class AuthController {
   static async refreshToken(req, res, next) {
     try {
       const { cookies } = req;
-      console.dir(cookies);
 
       if (!cookies?.jwt) {
         res.sendStatus(401);
       }
 
-      const oldRefreshToken = cookies.jwt;
+      const reqRefreshToken = cookies.jwt;
 
-      const userId = await verifyRefreshToken(oldRefreshToken);
+      const userId = await verifyRefreshToken(reqRefreshToken);
+
+      const user = await UserModel.selectOneUserById(userId);
+      const email = user?.email;
 
       const accessToken = await signAccessToken(userId);
-      res.send({ accessToken });
+      res.send({ accessToken, email });
     } catch (err) {
       next(err);
     }

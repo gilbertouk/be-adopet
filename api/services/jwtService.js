@@ -51,7 +51,7 @@ async function signRefreshToken(userId) {
     const payload = {};
     const secret = process.env.REFRESH_TOKEN_SECRET;
     const options = {
-      expiresIn: '1y',
+      expiresIn: '1d',
       issuer: process.env.TOKEN_ISSUER,
       audience: `${userId}`,
     };
@@ -64,7 +64,8 @@ async function signRefreshToken(userId) {
       await client.SET(
         `${userId}`,
         token,
-        { EX: 365 * 24 * 60 * 60 },
+        // { EX: 365 * 24 * 60 * 60 },
+        { EX: 24 * 60 * 60 },
         (err, reply) => {
           if (err) {
             console.log(err.message);
