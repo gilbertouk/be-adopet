@@ -36,7 +36,7 @@ class AuthController {
           sameSite: 'None',
           maxAge: 24 * 60 * 60 * 1000,
         })
-        .send({ accessToken });
+        .send({ accessToken, name: userExist.name, phone: userExist.phone });
     } catch (err) {
       next(err);
     }
@@ -56,9 +56,16 @@ class AuthController {
 
       const user = await UserModel.selectOneUserById(userId);
       const email = user?.email;
+      const name = user?.name;
+      const phone = user?.phone;
 
       const accessToken = await signAccessToken(userId);
-      res.send({ accessToken, email });
+      res.send({
+        accessToken,
+        email,
+        name,
+        phone,
+      });
     } catch (err) {
       next(err);
     }
