@@ -36,7 +36,13 @@ class AuthController {
           sameSite: 'None',
           maxAge: 24 * 60 * 60 * 1000,
         })
-        .send({ accessToken, name: userExist.name, phone: userExist.phone });
+        .send({
+          accessToken,
+          name: userExist.name,
+          phone: userExist.phone,
+          urlPhoto: userExist.url_photo,
+          id: userExist.id,
+        });
     } catch (err) {
       next(err);
     }
@@ -58,6 +64,8 @@ class AuthController {
       const email = user?.email;
       const name = user?.name;
       const phone = user?.phone;
+      const urlPhoto = user?.url_photo;
+      const id = user?.id;
 
       const accessToken = await signAccessToken(userId);
       res.send({
@@ -65,6 +73,8 @@ class AuthController {
         email,
         name,
         phone,
+        urlPhoto,
+        id,
       });
     } catch (err) {
       next(err);
