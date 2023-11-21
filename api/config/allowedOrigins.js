@@ -1,5 +1,5 @@
 const allowedOrigins = [
-  'https://www.yoursite.com',
+  'https://jocular-nougat-8b4074.netlify.app',
   'http://127.0.0.1:5173',
   'http://localhost:5173',
   'http://localhost:3500',
