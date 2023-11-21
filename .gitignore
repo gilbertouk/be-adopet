@@ -4,3 +4,4 @@ migrations
 coverage
 conf.yaml
 .vscode
+.env.production

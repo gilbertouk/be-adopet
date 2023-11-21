@@ -1,6 +1,9 @@
 import { createClient } from 'redis';
+import dotenv from 'dotenv';
 
-const client = createClient();
+const client = createClient({
+  url: process.env.REDIS_URL,
+});
 
 await client.connect(() => {
   console.log('Client connected to redis...');
@@ -25,13 +28,5 @@ client.on('end', () => {
 process.on('SIGINT', () => {
   client.quit();
 });
-
-// import { createClient } from 'redis';
-
-// const client = await createClient()
-//   .on('error', (err) => console.log('Redis Client Error', err))
-//   .connect('connect', () => {
-//     console.log('Client connected to redis...');
-//   });
 
 export default client;
