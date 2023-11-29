@@ -30,13 +30,23 @@ npm i
 
 ### Environment Variables
 
-#### Database
+#### Databases
 
-We need to create environment variables for our PostgreSQL database.
+We need to create environment variables for our PostgreSQL and Redis databases.
 
 Create a file called `.env` in the base of the repository.
 
 Paste inside the `.env` file:
+
+#### Redis environment variables config:
+
+```
+REDIS_URL=
+```
+
+Populate the `REDIS_URL` variable with your own Redis URL.
+
+If you are running the Redis database locally the URL should be `redis://localhost:6379`
 
 #### PostgreSQL environment variables config:
 
