@@ -7,14 +7,8 @@ WORKDIR /app
 # Clone the GitHub repository
 RUN git clone https://github.com/gilbertouk/be-adopet.git .
 
-# Install the latest version of Redis
-RUN apt-get update && apt-get install -y redis-server
-
-# Start the Redis service
-RUN service redis-server start
-
 # Set environment variables
-ENV REDIS_URL=redis://localhost:6379 \
+ENV REDIS_URL=redis[s]://[[username][:password]@][host][:port][/db-number] \
     DATABASE_URL=postgresql://USER:PASSWORD@HOST:PORT/DATABASE \
     ACCESS_TOKEN_SECRET=your_access_token_secret \
     REFRESH_TOKEN_SECRET=your_refresh_token_secret \
